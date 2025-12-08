@@ -1,12 +1,15 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
@@ -24,7 +27,7 @@ public class DoctorService {
     }
 
     @Transactional //will be needed in the future I think
-    public Doctor addDoctor(Doctor doctor){
+    public Doctor addDoctor(@Valid Doctor doctor){
         return doctorRepository.save(doctor);
     }
 
