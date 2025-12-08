@@ -3,6 +3,9 @@ package pl.edu.agh.to.clinicapp;
 
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,13 +17,19 @@ import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
 import pl.edu.agh.to.clinicapp.doctor.DoctorService;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional //to clean up after each test
+
 public class DoctorTests {
 
     @Autowired
@@ -39,33 +48,16 @@ public class DoctorTests {
         assertEquals("Doctor not added",before + 1, after);
     }
 
-    @Test
-    void addDoctorWithMissingFirstNameTest(){
-        Doctor doctor = new Doctor(" ","Tracz","12345678999","cardiologist","abc");
-        assertThrows(ConstraintViolationException.class,
-                () -> doctorService.addDoctor(doctor));
-    }
-    @Test
-    void addDoctorWithMissingLastNameTest(){
-        Doctor doctor = new Doctor("Janusz","","12345678999","cardiologist","abc");
-        assertThrows(ConstraintViolationException.class,
-                () -> doctorService.addDoctor(doctor));
-    }
-    @Test
-    void addDoctorWithMissingPeselNumberTest(){
-        Doctor doctor = new Doctor("Janusz","Tracz","","cardiologist","abc");
-        assertThrows(ConstraintViolationException.class,
-                () -> doctorService.addDoctor(doctor));
-    }
-    @Test
-    void addDoctorWithMissingSpecializationTest(){
-        Doctor doctor = new Doctor(" ","Tracz","12345678999","","abc");
-        assertThrows(ConstraintViolationException.class,
-                () -> doctorService.addDoctor(doctor));
-    }
-    @Test
-    void addDoctorWithMissingAddressTest(){
-        Doctor doctor = new Doctor(" ","Tracz","12345678999","cardiologist","");
+    @ParameterizedTest
+    @CsvSource({
+            "' ','Tracz','12345678999','cardiologist','abc'",
+            "'Janusz', ' ','12345678999','cardiologist','abc'",
+            "'Janusz', 'Tracz', '','cardiologist', 'abc'",
+            "'Janusz', 'Tracz', '12345678999', '' ,'abc'",
+            "'Janusz', 'Tracz', '12345678999','cardiologist',' '"
+    })
+    void addDoctorWithMissingFieldTest(String firstName, String lastName, String pesel, String specialization, String address){
+        Doctor doctor = new Doctor(firstName, lastName, pesel, specialization, address);
         assertThrows(ConstraintViolationException.class,
                 () -> doctorService.addDoctor(doctor));
     }
