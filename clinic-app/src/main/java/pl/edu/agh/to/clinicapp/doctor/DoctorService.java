@@ -2,7 +2,11 @@ package pl.edu.agh.to.clinicapp.doctor;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 
 import java.util.List;
 
@@ -14,14 +18,37 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public Doctor getDoctorById(int id)
-    {
-        return doctorRepository.findById(id).orElse(null);
+    public List<DoctorDTO> getDoctors(){
+        return doctorRepository.findAll()
+                .stream()
+                .map(this::mapToDoctorDTO)
+                .toList();
     }
 
-    public List<Doctor> getDoctors(){
-        return doctorRepository.findAll();
+    public DoctorDetailsDTO getDoctorById(int id){
+        return doctorRepository.findById(id)
+                .map(this::mapToDoctorDetailsDTO)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor at given ID not found"));
     }
+
+    private DoctorDTO mapToDoctorDTO(Doctor doctor) {
+        return new DoctorDTO(
+                doctor.getFirstName(),
+                doctor.getLastName(),
+                doctor.getSpecialization()
+        );
+    }
+
+    private DoctorDetailsDTO mapToDoctorDetailsDTO(Doctor doctor) {
+        return new DoctorDetailsDTO(
+                doctor.getId(),
+                doctor.getFirstName(),
+                doctor.getLastName(),
+                doctor.getSpecialization(),
+                doctor.getAddress()
+        );
+    }
+
 
     @Transactional //will be needed in the future I think
     public Doctor addDoctor(Doctor doctor){
