@@ -1,8 +1,11 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Doctor {
@@ -10,10 +13,26 @@ public class Doctor {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotBlank //at the Spring level
+    @Column(nullable = false) //at the database level
     private String firstName;
+
+    @NotBlank
+    @Column(nullable = false)
     private String lastName;
+
+    @NotBlank
+    @Column(nullable = false, unique = true)
+    @Pattern(regexp = "[0-9]{11}") //simple regex for pesel
     private String peselNumber;
+
+    @NotBlank
+    @Column(nullable = false)
     private String specialization;
+
+    @NotBlank
+    @Column(nullable = false)
     private String address;
 
 

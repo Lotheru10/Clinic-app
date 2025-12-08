@@ -1,9 +1,11 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
@@ -11,6 +13,7 @@ import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 import java.util.List;
 
 @Service
+@Validated
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
@@ -50,11 +53,11 @@ public class DoctorService {
 
 
     @Transactional //will be needed in the future I think
-    public Doctor addDoctor(Doctor doctor){
+    public Doctor addDoctor(@Valid Doctor doctor){
         return doctorRepository.save(doctor);
     }
 
-    public void deleteDoctor(@RequestBody Doctor doctor){
-        doctorRepository.delete(doctor);
+    public void deleteDoctor(int id){
+        doctorRepository.deleteById(id);
     }
 }
