@@ -8,8 +8,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -17,19 +19,21 @@ import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
 import pl.edu.agh.to.clinicapp.doctor.DoctorService;
 
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Transactional //to clean up after each test
-
+@AutoConfigureMockMvc //to test endpoints
 public class DoctorTests {
 
     @Autowired
@@ -37,6 +41,8 @@ public class DoctorTests {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    MockMvc mockMvc; //to test endpoints
 
 
     @Test
@@ -75,7 +81,7 @@ public class DoctorTests {
         Doctor savedDoctor = doctorService.addDoctor(doctor);
         int id = savedDoctor.getId();
         int before = doctorService.getDoctors().size();
-        doctorService.deleteDoctor(savedDoctor);
+        doctorService.deleteDoctor(id);
         int after = doctorService.getDoctors().size();
         assertEquals("Doctor not deleted",before - 1, after);
     }
@@ -121,4 +127,48 @@ public class DoctorTests {
                     doctorRepository.flush(); //to catch exception during transaction
                 });
     }
+
+
+
+    //Endpoints tests
+
+    @Test
+    void returnDoctorById() throws Exception {
+        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
+        Doctor savedDoctor = doctorService.addDoctor(doctor);
+        int id = savedDoctor.getId();
+
+        mockMvc.perform(get("/api/doctors/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").exists())
+                .andExpect(jsonPath("$.lastName").exists())
+                .andExpect(jsonPath("$.specialization").exists())
+                .andExpect(jsonPath("$.address").exists());
+
+    }
+    @Test
+    void returnDoctorsList() throws Exception {
+        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
+        Doctor doctor2 = new Doctor("Marek","Tracz","12345678991","cardiologist","abc");
+
+        doctorService.addDoctor(doctor);
+        doctorService.addDoctor(doctor2);
+
+        mockMvc.perform(get("/api/doctors"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].firstName").exists())
+                .andExpect(jsonPath("$[1].firstName").exists());
+    }
+
+    @Test
+    void returnDeleteDoctor() throws Exception {
+        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
+        Doctor savedDoctor = doctorService.addDoctor(doctor);
+        int id = savedDoctor.getId();
+
+        mockMvc.perform(delete("/api/doctors/{id}", id))
+                .andExpect(status().isOk());
+
+    }
+
 }

@@ -57,7 +57,7 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public void deleteDoctor(@RequestBody Doctor doctor){
-        doctorRepository.delete(doctor);
+    public void deleteDoctor(int id){
+        doctorRepository.deleteById(id);
     }
 }

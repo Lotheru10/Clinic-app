@@ -31,8 +31,8 @@ public class DoctorController {
         return doctorService.addDoctor(doctor);
     }
 
-    @DeleteMapping
-    public void deleteDoctor(@RequestBody Doctor doctor){
-        doctorService.deleteDoctor(doctor);
+    @DeleteMapping("/{id}")
+    public void deleteDoctor(@PathVariable int id){
+        doctorService.deleteDoctor(id);
     }
 }
