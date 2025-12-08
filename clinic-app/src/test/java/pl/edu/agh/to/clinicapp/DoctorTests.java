@@ -28,6 +28,8 @@ public class DoctorTests {
     @Autowired
     private DoctorService doctorService;
 
+
+
     @Test
     void addDoctorTest(){
         int before = doctorService.getDoctors().size();
@@ -81,7 +83,7 @@ public class DoctorTests {
         Doctor savedDoctor = doctorService.addDoctor(doctor);
         int id = savedDoctor.getId();
         int before = doctorService.getDoctors().size();
-        doctorService.deleteDoctor(doctorService.getDoctorById(id));
+        doctorService.deleteDoctor(savedDoctor);
         int after = doctorService.getDoctors().size();
         assertEquals("Doctor not deleted",before - 1, after);
     }

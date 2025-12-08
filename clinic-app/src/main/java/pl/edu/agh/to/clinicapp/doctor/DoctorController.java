@@ -1,6 +1,8 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 
 import java.util.List;
 
@@ -15,12 +17,12 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public Doctor getDoctorById(@PathVariable int id) {
+    public DoctorDetailsDTO getDoctorById(@PathVariable int id) {
         return doctorService.getDoctorById(id);
     }
 
     @GetMapping
-    public List<Doctor> getDoctors(){
+    public List<DoctorDTO> getDoctors(){
         return doctorService.getDoctors();
     }
 
