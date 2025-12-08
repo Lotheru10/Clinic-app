@@ -41,7 +41,6 @@ public class DoctorService {
 
     private DoctorDetailsDTO mapToDoctorDetailsDTO(Doctor doctor) {
         return new DoctorDetailsDTO(
-                doctor.getId(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getSpecialization(),
