@@ -1,14 +1,12 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.server.ResponseStatusException;
 import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class DoctorService {
     public DoctorDetailsDTO getDoctorById(int id){
         return doctorRepository.findById(id)
                 .map(this::mapToDoctorDetailsDTO)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor at given ID not found"));
+                .orElseThrow(()-> new DoctorNotFoundException(id));
     }
 
     private DoctorDTO mapToDoctorDTO(Doctor doctor) {
