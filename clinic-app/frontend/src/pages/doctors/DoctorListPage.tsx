@@ -34,7 +34,7 @@ export default function DoctorsListPage(){
             <ul>
                 {doctors.map((d, i) => (
                     <li key={i}>
-                        {d.id} {d.firstName} {d.lastName} {d.specialization}
+                        {d.id} {d.firstName} {d.lastName} - {d.specialization}
                     </li>
                 ))}
             </ul>

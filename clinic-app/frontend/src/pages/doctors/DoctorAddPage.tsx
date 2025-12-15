@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { addDoctor } from "../../api/doctors";
-import type { DoctorDTO, DoctorCreateRequest } from "../../types/doctor.ts"
+import {type DoctorDTO, type DoctorCreateRequest, DoctorSpecialization} from "../../types/doctor.ts"
 
 const initial: DoctorCreateRequest = {
     firstName: "",
@@ -48,8 +48,24 @@ export default function DoctorAddPage() {
                 <label>Pesel:</label>
                 <input value={form.peselNumber} onChange={onChange("peselNumber")} />
                 <label>Specialization:</label>
-                <input value={form.specialization} onChange={onChange("specialization")} />
-                <label>Address:</label>
+                <select
+                    value={form.specialization}
+                    onChange={(e) =>
+                        setForm((p) => ({
+                            ...p,
+                            specialization: e.target.value as DoctorSpecialization,
+                        }))
+                    }
+                    required
+                >
+                    <option value=""></option>
+
+                    {Object.values(DoctorSpecialization).map((s) => (
+                        <option key={s} value={s}>
+                            {s}
+                        </option>
+                    ))}
+                </select>                <label>Address:</label>
                 <input value={form.address} onChange={onChange("address")} />
 
                 <button type="submit">SUBMIT</button>
