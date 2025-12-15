@@ -72,4 +72,23 @@ public class Doctor {
         return address;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPeselNumber(String peselNumber) {
+        this.peselNumber = peselNumber;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

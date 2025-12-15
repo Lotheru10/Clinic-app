@@ -1,9 +1,10 @@
 package pl.edu.agh.to.clinicapp.dto;
 
-public record DoctorDetailsDTO(
-        int id,
+public record CreateDoctorDTO(
         String firstName,
         String lastName,
+        String peselNumber,
         String specialization,
         String address
-) {}
+) {
+}
