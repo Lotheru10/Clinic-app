@@ -15,10 +15,18 @@ import java.util.List;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
+
+
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
+    /**
+     * Retrieves a list of all doctors available in the system.
+     * The results are mapped to a simplified DTO format.
+     *
+     * @return a list of {@link DoctorDTO} objects representing all doctors
+     */
     public List<DoctorDTO> getDoctors(){
         return doctorRepository.findAll()
                 .stream()
@@ -26,6 +34,13 @@ public class DoctorService {
                 .toList();
     }
 
+    /**
+     * Retrieves detailed information about a specific doctor by their ID.
+     *
+     * @param id the unique identifier of the doctor
+     * @return a {@link DoctorDetailsDTO} containing detailed information including address
+     * @throws DoctorNotFoundException if no doctor is found with the provided ID
+     */
     public DoctorDetailsDTO getDoctorById(int id){
         return doctorRepository.findById(id)
                 .map(this::mapToDoctorDetailsDTO)
@@ -49,12 +64,23 @@ public class DoctorService {
         );
     }
 
-
-    @Transactional //will be needed in the future I think
+    /**
+     * Adds a new doctor to the database.
+     * This operation is transactional.
+     *
+     * @param doctor the {@link Doctor} entity to be saved; must be valid according to constraints
+     * @return the saved {@link Doctor} entity (including generated ID)
+     */
+    @Transactional
     public Doctor addDoctor(@Valid Doctor doctor){
         return doctorRepository.save(doctor);
     }
 
+    /**
+     * Deletes a doctor from the system based on their ID.
+     *
+     * @param id the unique identifier of the doctor to be deleted
+     */
     public void deleteDoctor(int id){
         doctorRepository.deleteById(id);
     }
