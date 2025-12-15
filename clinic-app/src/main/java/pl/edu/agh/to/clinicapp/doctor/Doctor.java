@@ -14,8 +14,8 @@ public class Doctor {
     @GeneratedValue
     private int id;
 
-    @NotBlank //at the Spring level
-    @Column(nullable = false) //at the database level
+    @NotBlank
+    @Column(nullable = false)
     private String firstName;
 
     @NotBlank
@@ -24,7 +24,7 @@ public class Doctor {
 
     @NotBlank
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = "[0-9]{11}") //simple regex for pesel
+    @Pattern(regexp = "[0-9]{11}")
     private String peselNumber;
 
     @NotBlank

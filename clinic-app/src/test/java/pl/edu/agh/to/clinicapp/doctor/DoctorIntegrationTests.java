@@ -1,30 +1,21 @@
-package pl.edu.agh.to.clinicapp;
+package pl.edu.agh.to.clinicapp.doctor;
 
 
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-import pl.edu.agh.to.clinicapp.doctor.Doctor;
-import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
-import pl.edu.agh.to.clinicapp.doctor.DoctorService;
 
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@Transactional //to clean up after each test
-@AutoConfigureMockMvc //to test endpoints
-public class DoctorTests {
+@Transactional
+@AutoConfigureMockMvc
+public class DoctorIntegrationTests {
 
     @Autowired
     private DoctorRepository doctorRepository;
@@ -42,7 +33,7 @@ public class DoctorTests {
     private DoctorService doctorService;
 
     @Autowired
-    MockMvc mockMvc; //to test endpoints
+    MockMvc mockMvc;
 
 
     @Test
