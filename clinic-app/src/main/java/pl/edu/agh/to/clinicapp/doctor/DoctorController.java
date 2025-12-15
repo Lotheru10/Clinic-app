@@ -1,6 +1,8 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 
@@ -27,8 +29,9 @@ public class DoctorController {
     }
 
     @PostMapping
-    public Doctor addDoctor(@RequestBody Doctor doctor){
-        return doctorService.addDoctor(doctor);
+    @ResponseStatus(HttpStatus.CREATED)
+    public DoctorDTO addDoctor(@RequestBody CreateDoctorDTO createDoctorDTO){
+        return doctorService.addDoctor(createDoctorDTO);
     }
 
     @DeleteMapping("/{id}")

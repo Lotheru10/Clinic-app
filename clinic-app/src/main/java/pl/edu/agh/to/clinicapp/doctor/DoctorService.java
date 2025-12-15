@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
@@ -49,6 +50,7 @@ public class DoctorService {
 
     private DoctorDTO mapToDoctorDTO(Doctor doctor) {
         return new DoctorDTO(
+                doctor.getId(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getSpecialization()
@@ -57,6 +59,7 @@ public class DoctorService {
 
     private DoctorDetailsDTO mapToDoctorDetailsDTO(Doctor doctor) {
         return new DoctorDetailsDTO(
+                doctor.getId(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getSpecialization(),
@@ -65,15 +68,27 @@ public class DoctorService {
     }
 
     /**
-     * Adds a new doctor to the database.
-     * This operation is transactional.
-     *
-     * @param doctor the {@link Doctor} entity to be saved; must be valid according to constraints
-     * @return the saved {@link Doctor} entity (including generated ID)
+     * Registers a new doctor in the system.
+     * <p>
+     * This method maps the provided creation DTO to a Doctor entity, persists it
+     * to the database within a transaction, and returns the saved doctor as a DTO.
+     * Input data is validated before processing.
+     * </p>
+     * @param createDoctorDTO the DTO containing the new doctor's details (e.g. PESEL, specialization); must be valid
+     * @return a {@link DoctorDTO} representing the newly created doctor, including the generated ID
      */
     @Transactional
-    public Doctor addDoctor(@Valid Doctor doctor){
-        return doctorRepository.save(doctor);
+    public DoctorDTO addDoctor(@Valid CreateDoctorDTO createDoctorDTO) {
+        Doctor doctor = new Doctor();
+        doctor.setFirstName(createDoctorDTO.firstName());
+        doctor.setLastName(createDoctorDTO.lastName());
+        doctor.setPeselNumber(createDoctorDTO.peselNumber());
+        doctor.setSpecialization(createDoctorDTO.specialization());
+        doctor.setAddress(createDoctorDTO.address());
+
+        Doctor savedDoctor = doctorRepository.save(doctor);
+
+        return mapToDoctorDTO(savedDoctor);
     }
 
     /**
