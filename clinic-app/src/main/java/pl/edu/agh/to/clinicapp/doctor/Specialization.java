@@ -1,0 +1,93 @@
+package pl.edu.agh.to.clinicapp.doctor;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum Specialization {
+    ALERGOLOGIA("alergologia"),
+    ANESTEZJOLOGIA_I_INTENSYWNA_TERAPIA("anestezjologia i intensywna terapia"),
+    ANGIOLOGIA("angiologia"),
+    AUDIOLOGIA_I_FONIATRIA("audiologia i foniatria"),
+    BALNEOLOGIA_I_MEDYCYNA_FIZYKALNA("balneologia i medycyna fizykalna"),
+    CHIRURGIA_DZIECIECA("chirurgia dziecięca"),
+    CHIRURGIA_KLATKI_PIERSIOWEJ("chirurgia klatki piersiowej"),
+    CHIRURGIA_NACZYNIOWA("chirurgia naczyniowa"),
+    CHIRURGIA_OGOLNA("chirurgia ogólna"),
+    CHIRURGIA_ONKOLOGICZNA("chirurgia onkologiczna"),
+    CHIRURGIA_PLASTYCZNA("chirurgia plastyczna"),
+    CHIRURGIA_SZCZEKOWO_TWARZOWA("chirurgia szczękowo-twarzowa"),
+    CHOROBY_PLUC("choroby płuc"),
+    CHOROBY_PLUC_DZIECI("choroby płuc dzieci"),
+    CHOROBY_WEWNETRZNE("choroby wewnętrzne"),
+    CHOROBY_ZAKAZNE("choroby zakaźne"),
+    DERMATOLOGIA_I_WENEROLOGIA("dermatologia i wenerologia"),
+    DIABETOLOGIA("diabetologia"),
+    DIAGNOSTYKA_LABORATORYJNA("diagnostyka laboratoryjna"),
+    ENDOKRYNOLOGIA("endokrynologia"),
+    ENDOKRYNOLOGIA_GINEKOLOGICZNA_I_ROZRODCZOSC("endokrynologia ginekologiczna i rozrodczość"),
+    ENDOKRYNOLOGIA_I_DIABETOLOGIA_DZIECIECA("endokrynologia i diabetologia dziecięca"),
+    EPIDEMIOLOGIA("epidemiologia"),
+    FARMAKOLOGIA_KLINICZNA("farmakologia kliniczna"),
+    GASTROENTEROLOGIA("gastroenterologia"),
+    GASTROENTEROLOGIA_DZIECIECA("gastroenterologia dziecięca"),
+    GENETYKA_KLINICZNA("genetyka kliniczna"),
+    GERIATRIA("geriatria"),
+    GINEKOLOGIA_ONKOLOGICZNA("ginekologia onkologiczna"),
+    HEMATOLOGIA("hematologia"),
+    HIPERTENSJOLOGIA("hipertensjologia"),
+    IMMUNOLOGIA_KLINICZNA("immunologia kliniczna"),
+    INTENSYWNA_TERAPIA("intensywna terapia"),
+    KARDIOCHIRURGIA("kardiochirurgia"),
+    KARDIOLOGIA("kardiologia"),
+    KARDIOLOGIA_DZIECIECA("kardiologia dziecięca"),
+    MEDYCYNA_LOTNICZA("medycyna lotnicza"),
+    MEDYCYNA_MORSKA_I_TROPIKALNA("medycyna morska i tropikalna"),
+    MEDYCYNA_NUKLEARNA("medycyna nuklearna"),
+    MEDYCYNA_PALIATYWNA("medycyna paliatywna"),
+    MEDYCYNA_PRACY("medycyna pracy"),
+    MEDYCYNA_RATUNKOWA("medycyna ratunkowa"),
+    MEDYCYNA_RODZINNA("medycyna rodzinna"),
+    MEDYCYNA_SADOWA("medycyna sądowa"),
+    MEDYCYNA_SPORTOWA("medycyna sportowa"),
+    MIKROBIOLOGIA_LEKARSKA("mikrobiologia lekarska"),
+    NEFROLOGIA("nefrologia"),
+    NEFROLOGIA_DZIECIECA("nefrologia dziecięca"),
+    NEONATOLOGIA("neonatologia"),
+    NEUROCHIRURGIA("neurochirurgia"),
+    NEUROLOGIA("neurologia"),
+    NEUROLOGIA_DZIECIECA("neurologia dziecięca"),
+    NEUROPATOLOGIA("neuropatologia"),
+    OKULISTYKA("okulistyka"),
+    ONKOLOGIA_I_HEMATOLOGIA_DZIECIECA("onkologia i hematologia dziecięca"),
+    ONKOLOGIA_KLINICZNA("onkologia kliniczna"),
+    ORTOPEDIA_I_TRAUMATOLOGIA_NARZADU_RUCHU("ortopedia i traumatologia narządu ruchu"),
+    OTORYNOLARYNGOLOGIA("otorynolaryngologia"),
+    OTORYNOLARYNGOLOGIA_DZIECIECA("otorynolaryngologia dziecięca"),
+    PATOMORFOLOGIA("patomorfologia"),
+    PEDIATRIA("pediatria"),
+    PEDIATRIA_METABOLICZNA("pediatria metaboliczna"),
+    PERINATOLOGIA("perinatologia"),
+    POLOZNICTWO_I_GINEKOLOGIA("położnictwo i ginekologia"),
+    PSYCHIATRIA("psychiatria"),
+    PSYCHIATRIA_DZIECI_I_MLODZIEZY("psychiatria dzieci i młodzieży"),
+    RADIOLOGIA_I_DIAGNOSTYKA_OBRAZOWA("radiologia i diagnostyka obrazowa"),
+    RADIOTERAPIA_ONKOLOGICZNA("radioterapia onkologiczna"),
+    REHABILITACJA_MEDYCZNA("rehabilitacja medyczna"),
+    REUMATOLOGIA("reumatologia"),
+    SEKSUOLOGIA("seksuologia"),
+    TOKSYKOLOGIA_KLINICZNA("toksykologia kliniczna"),
+    TRANSFUZJOLOGIA_KLINICZNA("transfuzjologia kliniczna"),
+    TRANSPLANTOLOGIA_KLINICZNA("transplantologia kliniczna"),
+    UROLOGIA("urologia"),
+    UROLOGIA_DZIECIECA("urologia dziecięca"),
+    ZDROWIE_PUBLICZNE("zdrowie publiczne");
+
+    private final String displayName;
+
+    Specialization(String displayName) {
+        this.displayName = displayName;
+    }
+    @JsonValue
+    public String getDisplayName() {
+        return displayName;
+    }
+}

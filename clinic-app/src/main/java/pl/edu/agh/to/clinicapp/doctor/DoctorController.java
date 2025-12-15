@@ -58,7 +58,7 @@ public class DoctorController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DoctorDTO addDoctor(@RequestBody CreateDoctorDTO createDoctorDTO){
+    public DoctorDetailsDTO addDoctor(@RequestBody CreateDoctorDTO createDoctorDTO){
         return doctorService.addDoctor(createDoctorDTO);
     }
 

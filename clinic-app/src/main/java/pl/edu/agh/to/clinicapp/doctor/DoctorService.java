@@ -75,10 +75,10 @@ public class DoctorService {
      * Input data is validated before processing.
      * </p>
      * @param createDoctorDTO the DTO containing the new doctor's details (e.g. PESEL, specialization); must be valid
-     * @return a {@link DoctorDTO} representing the newly created doctor, including the generated ID
+     * @return a {@link DoctorDetailsDTO} representing the newly created doctor, including the generated ID
      */
     @Transactional
-    public DoctorDTO addDoctor(@Valid CreateDoctorDTO createDoctorDTO) {
+    public DoctorDetailsDTO addDoctor(@Valid CreateDoctorDTO createDoctorDTO) {
         Doctor doctor = new Doctor();
         doctor.setFirstName(createDoctorDTO.firstName());
         doctor.setLastName(createDoctorDTO.lastName());
@@ -88,7 +88,7 @@ public class DoctorService {
 
         Doctor savedDoctor = doctorRepository.save(doctor);
 
-        return mapToDoctorDTO(savedDoctor);
+        return mapToDoctorDetailsDTO(savedDoctor);
     }
 
     /**

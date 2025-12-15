@@ -6,11 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
-
-import javax.print.Doc;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +30,8 @@ public class DoctorServiceTest {
 
     @Test
     void getDoctors() {
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
-        Doctor doctor2 = new Doctor("Marek", "Tracz", "12345678991", "cardiologist", "abc");
+        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
+        Doctor doctor2 = new Doctor("Marek", "Tracz", "12345678991", Specialization.KARDIOLOGIA, "abc");
         when(doctorRepository.findAll()).thenReturn(List.of(doctor, doctor2));
 
         List<DoctorDTO> result = doctorService.getDoctors();
@@ -50,7 +49,7 @@ public class DoctorServiceTest {
     @Test
     void getDoctorById() {
         int id = 1;
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
+        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
         when(doctorRepository.findById(id)).thenReturn(Optional.of(doctor));
 
         DoctorDetailsDTO result = doctorService.getDoctorById(id);
@@ -79,13 +78,23 @@ public class DoctorServiceTest {
 
     @Test
     void addDoctorCallsSave(){
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
-        when(doctorRepository.save(any(Doctor.class))).thenReturn(doctor);
+        CreateDoctorDTO createDoctorDTO = new CreateDoctorDTO("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
 
-        Doctor saved = doctorService.addDoctor(doctor);
+        Doctor savedEntity = new Doctor("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
+        savedEntity.setId(1);
 
-        assertEquals(saved, doctor);
-        verify(doctorRepository, times(1)).save(doctor);
+
+        when(doctorRepository.save(any(Doctor.class))).thenReturn(savedEntity);
+
+        DoctorDetailsDTO result = doctorService.addDoctor(createDoctorDTO);
+
+        assertEquals(savedEntity.getId(), result.id());
+        assertEquals(savedEntity.getFirstName(), result.firstName());
+        assertEquals(savedEntity.getLastName(), result.lastName());
+        assertEquals(savedEntity.getAddress(), result.address());
+        assertEquals(savedEntity.getSpecialization(), result.specialization());
+
+        verify(doctorRepository, times(1)).save(any(Doctor.class));
         verifyNoMoreInteractions(doctorRepository);
     }
 

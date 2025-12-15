@@ -12,6 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
 
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,38 +41,38 @@ public class DoctorIntegrationTests {
     @Test
     void addDoctorTest(){
         int before = doctorService.getDoctors().size();
-        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz","Tracz","12345678999",Specialization.KARDIOLOGIA,"abc");
         doctorService.addDoctor(doctor);
         int after = doctorService.getDoctors().size();
         assertEquals("Doctor not added",before + 1, after);
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "' ','Tracz','12345678999','cardiologist','abc'",
-            "'Janusz', ' ','12345678999','cardiologist','abc'",
-            "'Janusz', 'Tracz', '','cardiologist', 'abc'",
-            "'Janusz', 'Tracz', '12345678999', '' ,'abc'",
-            "'Janusz', 'Tracz', '12345678999','cardiologist',' '"
+    @CsvSource(nullValues = "NULL", value = {
+            "NULL,'Tracz','12345678999','KARDIOLOGIA','abc'",
+            "'Janusz', NULL,'12345678999','KARDIOLOGIA','abc'",
+            "'Janusz', 'Tracz', NULL,'KARDIOLOGIA', 'abc'",
+            "'Janusz', 'Tracz', '12345678999', NULL ,'abc'",
+            "'Janusz', 'Tracz', '12345678999','KARDIOLOGIA',NULL"
     })
-    void addDoctorWithMissingFieldTest(String firstName, String lastName, String pesel, String specialization, String address){
-        Doctor doctor = new Doctor(firstName, lastName, pesel, specialization, address);
+    void addDoctorWithMissingFieldTest(String firstName, String lastName, String pesel, Specialization specialization, String address){
+        CreateDoctorDTO doctor = new CreateDoctorDTO(firstName, lastName, pesel, specialization, address);
         assertThrows(ConstraintViolationException.class,
                 () -> doctorService.addDoctor(doctor));
     }
 
     @Test
     void addDoctorWithBadPeselNumberTest(){
-        Doctor doctor = new Doctor(" ","Tracz","123","cardiologist","abc");
+        CreateDoctorDTO doctor = new CreateDoctorDTO(" ","Tracz","123",Specialization.KARDIOLOGIA,"abc");
         assertThrows(ConstraintViolationException.class,
                 () -> doctorService.addDoctor(doctor));
     }
 
     @Test
     void deleteDoctorTest(){
-        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
-        Doctor savedDoctor = doctorService.addDoctor(doctor);
-        int id = savedDoctor.getId();
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz","Tracz","12345678999",Specialization.KARDIOLOGIA,"abc");
+        DoctorDetailsDTO savedDoctor = doctorService.addDoctor(doctor);
+        int id = savedDoctor.id();
         int before = doctorService.getDoctors().size();
         doctorService.deleteDoctor(id);
         int after = doctorService.getDoctors().size();
@@ -79,25 +81,23 @@ public class DoctorIntegrationTests {
 
     @Test
     void doctorDetailsTest(){
-        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
-        Doctor savedDoctor = doctorService.addDoctor(doctor);
-        String firstName = savedDoctor.getFirstName();
-        String lastName = savedDoctor.getLastName();
-        String pesel = savedDoctor.getPeselNumber();
-        String specialization = savedDoctor.getSpecialization();
-        String address = savedDoctor.getAddress();
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz","Tracz","12345678999",Specialization.KARDIOLOGIA,"abc");
+        DoctorDetailsDTO savedDoctor = doctorService.addDoctor(doctor);
+        String firstName = savedDoctor.firstName();
+        String lastName = savedDoctor.lastName();
+        Specialization specialization = savedDoctor.specialization();
+        String address = savedDoctor.address();
         assertEquals("Bad first name", "Janusz", firstName );
         assertEquals("Bad last name", "Tracz", lastName );
-        assertEquals("Bad pesel", "12345678999",pesel );
-        assertEquals("Bad specialization", "cardiologist", specialization );
+        assertEquals("Bad specialization", Specialization.KARDIOLOGIA, specialization );
         assertEquals("Bad address", "abc", address );
     }
 
     @Test
     void addTwoDoctorsTest(){
         int before = doctorService.getDoctors().size();
-        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
-        Doctor doctor2 = new Doctor("Marek","Tracz","12345678991","cardiologist","abc");
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz","Tracz","12345678999",Specialization.KARDIOLOGIA,"abc");
+        CreateDoctorDTO doctor2 = new CreateDoctorDTO("Marek","Tracz","12345678991",Specialization.KARDIOLOGIA,"abc");
 
         doctorService.addDoctor(doctor);
         doctorService.addDoctor(doctor2);
@@ -108,8 +108,8 @@ public class DoctorIntegrationTests {
 
     @Test
     void addTwoDoctorsWithTheSamePeselNumberTest() {
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
-        Doctor doctor2 = new Doctor("Marek", "Tracz", "12345678999", "cardiologist", "abc");
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
+        CreateDoctorDTO doctor2 = new CreateDoctorDTO("Marek", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
 
         doctorService.addDoctor(doctor);
         assertThrows(DataIntegrityViolationException.class,
@@ -125,9 +125,9 @@ public class DoctorIntegrationTests {
 
     @Test
     void returnDoctorById() throws Exception {
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
-        Doctor savedDoctor = doctorService.addDoctor(doctor);
-        int id = savedDoctor.getId();
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
+        DoctorDetailsDTO savedDoctor = doctorService.addDoctor(doctor);
+        int id = savedDoctor.id();
 
         mockMvc.perform(get("/api/doctors/{id}", id))
                 .andExpect(status().isOk())
@@ -139,8 +139,8 @@ public class DoctorIntegrationTests {
     }
     @Test
     void returnDoctorsList() throws Exception {
-        Doctor doctor = new Doctor("Janusz","Tracz","12345678999","cardiologist","abc");
-        Doctor doctor2 = new Doctor("Marek","Tracz","12345678991","cardiologist","abc");
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz","Tracz","12345678999",Specialization.KARDIOLOGIA,"abc");
+        CreateDoctorDTO doctor2 = new CreateDoctorDTO("Marek","Tracz","12345678991",Specialization.KARDIOLOGIA,"abc");
 
         doctorService.addDoctor(doctor);
         doctorService.addDoctor(doctor2);
@@ -153,9 +153,9 @@ public class DoctorIntegrationTests {
 
     @Test
     void returnDeleteDoctor() throws Exception {
-        Doctor doctor = new Doctor("Janusz", "Tracz", "12345678999", "cardiologist", "abc");
-        Doctor savedDoctor = doctorService.addDoctor(doctor);
-        int id = savedDoctor.getId();
+        CreateDoctorDTO doctor = new CreateDoctorDTO("Janusz", "Tracz", "12345678999", Specialization.KARDIOLOGIA, "abc");
+        DoctorDetailsDTO savedDoctor = doctorService.addDoctor(doctor);
+        int id = savedDoctor.id();
 
         mockMvc.perform(delete("/api/doctors/{id}", id))
                 .andExpect(status().isOk());

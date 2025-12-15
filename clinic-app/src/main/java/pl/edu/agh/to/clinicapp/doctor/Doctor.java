@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -27,16 +28,16 @@ public class Doctor {
     @Pattern(regexp = "[0-9]{11}")
     private String peselNumber;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    private String specialization;
+    private Specialization specialization;
 
     @NotBlank
     @Column(nullable = false)
     private String address;
 
 
-    public Doctor(String firstName, String lastName, String peselNumber, String specialization, String address) {
+    public Doctor(String firstName, String lastName, String peselNumber, Specialization specialization, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.peselNumber = peselNumber;
@@ -64,7 +65,7 @@ public class Doctor {
         return peselNumber;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
@@ -84,11 +85,15 @@ public class Doctor {
         this.peselNumber = peselNumber;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

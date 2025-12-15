@@ -1,9 +1,11 @@
 package pl.edu.agh.to.clinicapp.dto;
 
+import pl.edu.agh.to.clinicapp.doctor.Specialization;
+
 public record DoctorDetailsDTO(
         int id,
         String firstName,
         String lastName,
-        String specialization,
+        Specialization specialization,
         String address
 ) {}
