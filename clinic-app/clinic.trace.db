@@ -1,0 +1,15 @@
+2025-12-16 14:40:02.963036+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'Kardiolog' (DOCTOR_COPY_3_0: ""SPECIALIZATION"" TINYINT NOT NULL)"; SQL statement:
+INSERT INTO "PUBLIC"."DOCTOR_COPY_3_0"("ID", "ADDRESS", "FIRST_NAME", "LAST_NAME", "PESEL_NUMBER", "SPECIALIZATION") OVERRIDING SYSTEM VALUE SELECT "ID", "ADDRESS", "FIRST_NAME", "LAST_NAME", "PESEL_NUMBER", "SPECIALIZATION" FROM "PUBLIC"."DOCTOR" [22018-232]
+2025-12-16 14:43:11.657354+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
+2025-12-16 14:43:11.657338+01:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
+2025-12-16 14:43:20.092215+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
+2025-12-16 14:43:20.092165+01:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
+2025-12-16 14:43:36.529882+01:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
+2025-12-16 14:43:36.529901+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "Kardiolog" [22018-232]
