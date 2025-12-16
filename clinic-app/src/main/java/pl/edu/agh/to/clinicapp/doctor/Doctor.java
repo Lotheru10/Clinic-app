@@ -12,17 +12,15 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
     @Column(nullable = false)
     private String firstName;
 
-    @NotBlank
+
     @Column(nullable = false)
     private String lastName;
 
-    @NotBlank
+
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = "[0-9]{11}")
     private String peselNumber;
 
     @NotNull
@@ -30,7 +28,6 @@ public class Doctor {
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Specialization specialization;
 
-    @NotBlank
     @Column(nullable = false)
     private String address;
 
