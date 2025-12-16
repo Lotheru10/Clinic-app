@@ -158,7 +158,7 @@ public class DoctorIntegrationTests {
         int id = savedDoctor.id();
 
         mockMvc.perform(delete("/api/doctors/{id}", id))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
     }
 
