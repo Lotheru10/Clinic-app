@@ -65,9 +65,9 @@ export default function DoctorAddPage() {
                             {s}
                         </option>
                     ))}
-                </select>                <label>Address:</label>
+                </select>
+                <label>Address:</label>
                 <input value={form.address} onChange={onChange("address")} />
-
                 <button type="submit">SUBMIT</button>
             </form>
 
