@@ -16,7 +16,7 @@ function App() {
               <NavLink to="/doctors/details">Doctor details</NavLink>
               <NavLink to="/doctors/add">Add doctor</NavLink>
               <NavLink to="/doctors/delete">Delete doctor</NavLink>
-              <NavLink to="/doctors/load">Load doctors</NavLink>
+              <NavLink to="/doctors/load">Load sample doctors</NavLink>
           </nav>
           <div>
               <Routes>

@@ -1,9 +1,6 @@
 package pl.edu.agh.to.clinicapp.doctor;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -12,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 public class Doctor {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotBlank
@@ -30,6 +27,7 @@ public class Doctor {
 
     @NotNull
     @Column(nullable = false)
+    @Enumerated(jakarta.persistence.EnumType.STRING)
     private Specialization specialization;
 
     @NotBlank

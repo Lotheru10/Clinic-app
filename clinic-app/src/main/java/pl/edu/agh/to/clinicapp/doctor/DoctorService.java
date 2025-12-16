@@ -16,8 +16,6 @@ import java.util.List;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
-
-
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }

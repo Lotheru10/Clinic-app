@@ -18,7 +18,7 @@ import java.util.List;
 @Tag(name = "Doctors", description = "API for managing doctors")
 public class DoctorController {
 
-    DoctorService doctorService;
+    private final DoctorService doctorService;
 
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
@@ -70,6 +70,7 @@ public class DoctorController {
             @ApiResponse(responseCode = "200", description = "Doctor deleted successfully"),
     })
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDoctor(
             @Parameter(description = "ID of the doctor to delete") @PathVariable int id){
         doctorService.deleteDoctor(id);
