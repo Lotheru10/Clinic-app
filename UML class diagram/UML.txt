@@ -1,0 +1,167 @@
+%% Usable on https://mermaid.js.org/syntax/classDiagram.html
+
+classDiagram
+    %% --- ENUMS ---
+    class Specialization {
+        <<Enumeration>>
+        KARDIOLOGIA
+        OKULISTYKA
+        CHIRURGIA_OGOLNA
+        PEDIATRIA
+        ...
+        -String displayName
+        +getDisplayName() String
+    }
+
+    %% --- ENTITIES ---
+    class Doctor {
+        <<Entity>>
+        -int id
+        -String firstName
+        -String lastName
+        -String peselNumber
+        -Specialization specialization
+        -String address
+        +Doctor()
+        +Doctor(String, String, String, Specialization, String)
+        +getId() int
+        +getFirstName() String
+        +getLastName() String
+        +getPeselNumber() String
+        +getSpecialization() Specialization
+        +getAddress() String
+        +setFirstName(String) void
+        +setLastName(String) void
+        +setPeselNumber(String) void
+        +setSpecialization(Specialization) void
+        +setAddress(String) void
+        +setId(int) void
+    }
+
+    %% --- DTOs (RECORDS) ---
+    class CreateDoctorDTO {
+        <<Record>>
+        +String firstName
+        +String lastName
+        +String peselNumber
+        +Specialization specialization
+        +String address
+    }
+
+    class DoctorDTO {
+        <<Record>>
+        +int id
+        +String firstName
+        +String lastName
+        +Specialization specialization
+    }
+
+    class DoctorDetailsDTO {
+        <<Record>>
+        +int id
+        +String firstName
+        +String lastName
+        +Specialization specialization
+        +String address
+    }
+
+    %% --- REPOSITORY ---
+    class JpaRepository~T, ID~ {
+        <<Interface>>
+    }
+
+    class DoctorRepository {
+        <<Interface>>
+        <<Repository>>
+    }
+
+    %% --- SERVICE ---
+    class DoctorService {
+        <<Service>>
+        -DoctorRepository doctorRepository
+        +DoctorService(DoctorRepository)
+        +getDoctors() List~DoctorDTO~
+        +getDoctorById(int) DoctorDetailsDTO
+        +addDoctor(CreateDoctorDTO) DoctorDetailsDTO
+        +deleteDoctor(int) void
+        -mapToDoctorDTO(Doctor) DoctorDTO
+        -mapToDoctorDetailsDTO(Doctor) DoctorDetailsDTO
+    }
+
+    %% --- CONTROLLERS ---
+    class DoctorController {
+        <<RestController>>
+        -DoctorService doctorService
+        +DoctorController(DoctorService)
+        +getDoctorById(int) DoctorDetailsDTO
+        +getDoctors() List~DoctorDTO~
+        +addDoctor(CreateDoctorDTO) DoctorDetailsDTO
+        +deleteDoctor(int) void
+    }
+
+    %% --- EXCEPTIONS ---
+    class DoctorNotFoundException {
+        <<Exception>>
+        +DoctorNotFoundException(int)
+    }
+
+    class GlobalExceptionHandler {
+        <<RestControllerAdvice>>
+        +handleDoctorNotFound(DoctorNotFoundException) String
+    }
+
+    %% --- DEV / EXAMPLE ---
+    class ExampleDoctorController {
+        <<RestController>>
+        <<Profile: dev>>
+        -DoctorRepository doctorRepository
+        -List~Doctor~ exampleDoctors
+        +addExampleDoctors() void
+    }
+
+    class ExampleDoctorsFactory {
+        <<Configuration>>
+        <<Profile: dev>>
+        +exampleDoctors() List~Doctor~
+    }
+
+    class ClinicApp {
+        <<SpringBootApplication>>
+        +main(String[]) void
+    }
+
+    %% ================= RELACJE =================
+
+    %% Dziedziczenie
+    DoctorRepository --|> JpaRepository : extends
+
+    %% Zależności Enuma
+    Doctor --> Specialization : uses
+    CreateDoctorDTO ..> Specialization : uses
+    DoctorDTO ..> Specialization : uses
+    DoctorDetailsDTO ..> Specialization : uses
+
+    %% Warstwy aplikacji (Agregacja/Asocjacja)
+    DoctorController o--> DoctorService : uses
+    DoctorService o--> DoctorRepository : uses
+    ExampleDoctorController o--> DoctorRepository : uses
+
+    %% Operacje na danych (Dependency)
+    DoctorRepository ..> Doctor : manages
+    DoctorService ..> Doctor : maps
+    DoctorService ..> DoctorDTO : creates
+    DoctorService ..> DoctorDetailsDTO : creates
+    DoctorService ..> CreateDoctorDTO : reads
+
+    %% Kontroler zwraca/przyjmuje DTO
+    DoctorController ..> DoctorDTO : returns
+    DoctorController ..> DoctorDetailsDTO : returns
+    DoctorController ..> CreateDoctorDTO : accepts
+
+    %% Wyjątki
+    DoctorService ..> DoctorNotFoundException : throws
+    GlobalExceptionHandler ..> DoctorNotFoundException : handles
+
+    %% Dev Profile
+    ExampleDoctorsFactory ..> Doctor : creates instances
+    ExampleDoctorController o--> Doctor : holds list
