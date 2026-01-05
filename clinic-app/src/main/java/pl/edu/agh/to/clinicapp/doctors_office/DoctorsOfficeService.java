@@ -20,12 +20,25 @@ public class DoctorsOfficeService {
         this.doctorsOfficeRepository = doctorsOfficeRepository;
     }
 
+    /**
+     * Retrieves detailed information about a specific doctor's office by their ID.
+     *
+     * @param id the unique identifier of the doctor's office
+     * @return a {@link DoctorsOfficeDetailsDTO} containing detailed information
+     * @throws DoctorsOfficeNotFoundException if no doctor's office is found with the provided ID
+     */
     public DoctorsOfficeDetailsDTO getDoctorsOfficeById(int id){
         return doctorsOfficeRepository.findById(id)
                 .map(this::mapToDoctorsOfficeDetailsDTO)
                 .orElseThrow(() -> new DoctorsOfficeNotFoundException(id));
     }
 
+    /**
+     * Retrieves a list of all doctors available in the system.
+     * The results are mapped to a simplified DTO format.
+     *
+     * @return a list of {@link DoctorsOfficeDTO} objects representing all doctors
+     */
     public List<DoctorsOfficeDTO> getAllDoctorsOffices() {
         return doctorsOfficeRepository.findAll()
                 .stream()
@@ -40,7 +53,16 @@ public class DoctorsOfficeService {
         );
     }
 
-
+    /**
+     * Registers a new doctor's office in the system.
+     * <p>
+     * This method maps the provided creation DTO to a DoctorsOffice entity, persists it
+     * to the database within a transaction, and returns the saved doctor's office as a DTO.
+     * Input data is validated before processing.
+     * </p>
+     * @param createDoctorsOfficeDTO the DTO containing the new doctor's office details; must be valid
+     * @return a {@link DoctorsOfficeDetailsDTO} representing the newly created doctor's office, including the generated ID
+     */
     @Transactional
     public DoctorsOfficeDetailsDTO addDoctorsOffice(@Valid CreateDoctorsOfficeDTO createDoctorsOfficeDTO){
         DoctorsOffice doctorsOffice = new DoctorsOffice();
@@ -60,6 +82,11 @@ public class DoctorsOfficeService {
         );
     }
 
+    /**
+     * Deletes a doctor's office from the system based on its ID.
+     *
+     * @param id the unique identifier of the doctor's office to be deleted
+     */
     public void deleteDoctorsOffice(int id){
         doctorsOfficeRepository.deleteById(id);
     }
