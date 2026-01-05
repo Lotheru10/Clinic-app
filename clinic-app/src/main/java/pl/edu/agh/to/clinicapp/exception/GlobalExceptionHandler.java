@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PatientNotFoundException.class)
+    public String handlePatientNotFound(PatientNotFoundException ex) {
+        return ex.getMessage();
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public String handleValidationExceptions(MethodArgumentNotValidException ex) {
