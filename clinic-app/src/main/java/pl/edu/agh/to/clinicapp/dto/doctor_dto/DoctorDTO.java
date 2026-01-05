@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.dto;
+package pl.edu.agh.to.clinicapp.dto.doctor_dto;
 
 import pl.edu.agh.to.clinicapp.doctor.Specialization;
 

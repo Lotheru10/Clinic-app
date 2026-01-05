@@ -12,8 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
 
 import java.util.List;
