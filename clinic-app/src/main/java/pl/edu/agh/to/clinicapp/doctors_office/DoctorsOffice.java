@@ -1,9 +1,10 @@
 package pl.edu.agh.to.clinicapp.doctors_office;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import pl.edu.agh.to.clinicapp.shift.Shift;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class DoctorsOffice {
@@ -16,6 +17,9 @@ public class DoctorsOffice {
 
     @Column(nullable = false)
     private String roomDescription;
+
+    @OneToMany(mappedBy = "office")
+    private final List<Shift> shifts = new ArrayList<>();
 
     public DoctorsOffice(String roomNumber, String roomDescription){
         this.roomNumber = roomNumber;
