@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import pl.edu.agh.to.clinicapp.shift.Shift;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Doctor {
@@ -30,6 +34,9 @@ public class Doctor {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "doctor" )
+    private final List<Shift> shifts = new ArrayList<>();
 
 
     public Doctor(String firstName, String lastName, String peselNumber, Specialization specialization, String address) {
