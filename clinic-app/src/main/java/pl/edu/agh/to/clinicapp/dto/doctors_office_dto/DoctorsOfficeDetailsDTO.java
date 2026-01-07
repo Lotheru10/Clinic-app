@@ -1,8 +1,14 @@
 package pl.edu.agh.to.clinicapp.dto.doctors_office_dto;
 
+import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorOfficeShiftDTO;
+import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorShiftDTO;
+
+import java.util.List;
+
 public record DoctorsOfficeDetailsDTO(
         int id,
         String roomNumber,
-        String roomDescription
+        String roomDescription,
+        List<DoctorOfficeShiftDTO> shifts
 ) {
 }

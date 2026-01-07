@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ShiftRepository extends JpaRepository<Shift, Integer> {
@@ -29,6 +30,16 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
             """)
     boolean doctorsOfficeBusy(
             @Param("doctorsOfficeId") int doctorsOfficeId,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
+    @Query("""
+            select s from Shift s
+            where s.start < :end
+            and s.end > :start
+            """)
+    List<Shift> overlappingShifts(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );

@@ -75,6 +75,10 @@ public class Doctor {
         return address;
     }
 
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

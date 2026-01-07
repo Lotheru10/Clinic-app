@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Table(name = "shifts")
 public class Shift {
 
     @Id
@@ -25,10 +26,10 @@ public class Shift {
     @ManyToOne(optional = false)
     private DoctorsOffice office;
 
-    @Column(nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime start;
 
-    @Column(nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime end;
 
     public Shift() {

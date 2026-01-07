@@ -4,10 +4,13 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorOfficeShiftDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.List;
 
@@ -78,9 +81,22 @@ public class DoctorsOfficeService {
         return new DoctorsOfficeDetailsDTO(
                 doctorsOffice.getId(),
                 doctorsOffice.getRoomNumber(),
-                doctorsOffice.getRoomDescription()
+                doctorsOffice.getRoomDescription(),
+                doctorsOffice.getShifts().stream()
+                        .map(this::mapToDoctorOfficeShiftDTO)
+                        .toList()
         );
     }
+    private DoctorOfficeShiftDTO mapToDoctorOfficeShiftDTO(Shift shift) {
+        Doctor d = shift.getDoctor();
+        return new DoctorOfficeShiftDTO(
+                d.getId(),
+                d.getFirstName() + " "+ d.getLastName(),
+                shift.getStart(),
+                shift.getEnd()
+        );
+    }
+
 
     /**
      * Deletes a doctor's office from the system based on its ID.

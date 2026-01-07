@@ -18,6 +18,7 @@ public class DoctorsOffice {
     @Column(nullable = false)
     private String roomDescription;
 
+
     @OneToMany(mappedBy = "office")
     private final List<Shift> shifts = new ArrayList<>();
 
@@ -40,6 +41,10 @@ public class DoctorsOffice {
 
     public String getRoomDescription() {
         return roomDescription;
+    }
+
+    public List<Shift> getShifts() {
+        return shifts;
     }
 
     public void setRoomDescription(String roomDescription) {
