@@ -1,0 +1,99 @@
+package pl.edu.agh.to.clinicapp.doctors_office;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
+import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
+import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
+import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+
+@ExtendWith(MockitoExtension.class)
+public class DoctorsOfficeServiceTest {
+
+    @Mock
+    private DoctorsOfficeRepository doctorsOfficeRepository;
+
+    @InjectMocks
+    private DoctorsOfficeService doctorsOfficeService;
+
+    @Test
+    void getAllDoctorsOffices() {
+        DoctorsOffice office1 = new DoctorsOffice("101", "Gabinet Zabiegowy");
+        office1.setId(1);
+        DoctorsOffice office2 = new DoctorsOffice("102", "Gabinet Lekarski");
+        office2.setId(2);
+
+        when(doctorsOfficeRepository.findAll()).thenReturn(List.of(office1, office2));
+
+        List<DoctorsOfficeDTO> result = doctorsOfficeService.getAllDoctorsOffices();
+
+        assertEquals(2, result.size());
+        assertEquals("101", result.get(0).roomNumber());
+        assertEquals("102", result.get(1).roomNumber());
+        verify(doctorsOfficeRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getDoctorsOfficeByIdReturnDetails() {
+        int id = 1;
+        DoctorsOffice office = new DoctorsOffice("101", "Opis");
+        office.setId(id);
+
+        when(doctorsOfficeRepository.findById(id)).thenReturn(Optional.of(office));
+
+        DoctorsOfficeDetailsDTO result = doctorsOfficeService.getDoctorsOfficeById(id);
+
+        assertEquals(id, result.id());
+        assertEquals("101", result.roomNumber());
+        assertEquals("Opis", result.roomDescription());
+    }
+
+    @Test
+    void getDoctorsOfficeByIdNotFound() {
+        int id = 99;
+        when(doctorsOfficeRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(DoctorsOfficeNotFoundException.class,
+                () -> doctorsOfficeService.getDoctorsOfficeById(id));
+    }
+
+    @Test
+    void addDoctorsOfficeSaveAndReturnDto() {
+        CreateDoctorsOfficeDTO createDTO = new CreateDoctorsOfficeDTO("202", "Okulista");
+
+        DoctorsOffice savedEntity = new DoctorsOffice("202", "Okulista");
+        savedEntity.setId(10);
+
+        when(doctorsOfficeRepository.save(any(DoctorsOffice.class))).thenReturn(savedEntity);
+
+        DoctorsOfficeDetailsDTO result = doctorsOfficeService.addDoctorsOffice(createDTO);
+
+        assertEquals(10, result.id());
+        assertEquals("202", result.roomNumber());
+        assertEquals("Okulista", result.roomDescription());
+
+        verify(doctorsOfficeRepository).save(any(DoctorsOffice.class));
+    }
+
+    @Test
+    void deleteDoctorsOfficeCallRepository() {
+        int id = 5;
+
+        doctorsOfficeService.deleteDoctorsOffice(id);
+
+        verify(doctorsOfficeRepository, times(1)).deleteById(id);
+    }
+}
