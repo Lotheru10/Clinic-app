@@ -15,7 +15,7 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
             and s.start < :end
             and s.end > :start
             """)
-    boolean DoctorBusy(
+    boolean doctorBusy(
             @Param("doctorId") int doctorId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
@@ -27,7 +27,7 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
             and s.start < :end
             and s.end > :start
             """)
-    boolean DoctorsOfficeBusy(
+    boolean doctorsOfficeBusy(
             @Param("doctorsOfficeId") int doctorsOfficeId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end

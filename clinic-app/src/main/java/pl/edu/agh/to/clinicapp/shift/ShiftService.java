@@ -4,12 +4,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
-import pl.edu.agh.to.clinicapp.doctor.DoctorService;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeRepository;
-import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeService;
-import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
-import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.CreateShiftDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.ShiftDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
@@ -42,16 +38,15 @@ public class ShiftService {
             throw new IllegalArgumentException("Shift starts in the past or after its end");
         }
 
-        //najpierw tutaj uzyłem serwisu, bo fajnie exception rzuca, ale potem sie psuło przez to, ze metoda z serwisu zwraca DTO, wiec idk jak sie robic powinno
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(
                 () -> new DoctorNotFoundException(doctorId));
         DoctorsOffice doctorsOffice = doctorsOfficeRepository.findById(officeId).orElseThrow(
                 () -> new DoctorsOfficeNotFoundException(officeId));
 
-        if (shiftRepository.DoctorBusy(doctorId, start, end)){
+        if (shiftRepository.doctorBusy(doctorId, start, end)){
             throw new IllegalStateException("Doctor is busy");
         }
-        if (shiftRepository.DoctorsOfficeBusy(officeId, start, end)){
+        if (shiftRepository.doctorsOfficeBusy(officeId, start, end)){
             throw new IllegalStateException("DoctorsOffice is busy");
         }
         Shift shift = new Shift(doctor, doctorsOffice, start, end);

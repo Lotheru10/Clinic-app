@@ -10,13 +10,13 @@ import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import java.time.LocalDateTime;
 
 public record CreateShiftDTO(
-        @NotBlank(message = "Doctor is required")
+        @NotNull(message = "Doctor is required")
         int doctorId,
-        @NotBlank(message = "Doctor's office is required")
+        @NotNull(message = "Doctor's office is required")
         int officeId,
-        @NotBlank(message = "PESEL is required")
+        @NotNull(message = "Start is required")
         LocalDateTime start,
-        @NotNull(message = "Specialization is required")
+        @NotNull(message = "End is required")
         LocalDateTime end
 ) {
 }
