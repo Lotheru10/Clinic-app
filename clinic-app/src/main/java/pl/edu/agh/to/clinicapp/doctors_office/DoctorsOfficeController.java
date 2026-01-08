@@ -1,6 +1,5 @@
 package pl.edu.agh.to.clinicapp.doctors_office;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,7 +15,7 @@ import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/doctorsOffice")
+@RequestMapping("/api/doctorsOffices")
 @Tag(name="Doctor's office", description = "API for managing Doctor's Offices")
 public class DoctorsOfficeController {
 

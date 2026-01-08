@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import type {DoctorDTO} from "../../types/doctor.ts";
-import {getDoctors} from "../../api/doctors.ts";
+import type {DoctorsOfficeDTO} from "../../types/doctorsoffice.ts";
+import {getDoctorsOffices} from "../../api/doctorsoffices.ts";
 
 
 export default function
-    DoctorsListPage(){
-    const [doctors, setDoctors] = useState<DoctorDTO[]>([]);
+    DoctorsOfficeListPage(){
+    const [doctors, setDoctors] = useState<DoctorsOfficeDTO[]>([]);
     const [error, setError] = useState<string>("");
     const [loading, setLoading]  = useState<boolean>(true);
 
@@ -13,10 +13,10 @@ export default function
         try {
             setError("");
             setLoading(true);
-            const data = await getDoctors();
+            const data = await getDoctorsOffices();
             setDoctors(data);
         } catch (e){
-            setError(e instanceof Error ? e.message : "Doctors loading problem")
+            setError(e instanceof Error ? e.message : "Doctor's office loading problem")
         } finally {
             setLoading(false);
         }
@@ -29,13 +29,13 @@ export default function
 
     return (
         <div>
-            <h2>Doctors List</h2>
+            <h2>Doctors' offices List</h2>
             <button onClick={() => void load()}>Refresh</button>
 
             <ul>
                 {doctors.map((d, i) => (
                     <li key={i}>
-                        {d.id} {d.firstName} {d.lastName} - {d.specialization}
+                        {d.id} {d.roomNumber}
                     </li>
                 ))}
             </ul>

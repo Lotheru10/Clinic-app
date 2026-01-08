@@ -1,3 +1,5 @@
+import type {DoctorShiftDTO} from "./shift.ts";
+
 export interface DoctorDTO {
     id: number;
     firstName: string;
@@ -7,6 +9,7 @@ export interface DoctorDTO {
 
 export interface DoctorDetailsDTO extends DoctorDTO{
     address: string;
+    shifts: DoctorShiftDTO[];
 }
 
 export type DoctorCreateRequest = {
