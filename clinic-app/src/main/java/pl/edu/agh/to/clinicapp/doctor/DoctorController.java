@@ -35,7 +35,7 @@ public class DoctorController {
     })
     @GetMapping("/{id}")
     public DoctorDetailsDTO getDoctorById(
-            @Parameter(description = "ID of the doctor to be retrieved") @PathVariable int id) {
+            @Parameter(description = "ID of the doctor to be retrieved") @PathVariable("id") int id) {
         return doctorService.getDoctorById(id);
     }
 
@@ -73,7 +73,7 @@ public class DoctorController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDoctor(
-            @Parameter(description = "ID of the doctor to delete") @PathVariable int id){
+            @Parameter(description = "ID of the doctor to delete") @PathVariable("id") int id){
         doctorService.deleteDoctor(id);
     }
 }

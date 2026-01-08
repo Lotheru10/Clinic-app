@@ -10,6 +10,7 @@ import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorOfficeShiftDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorShiftDTO;
+import pl.edu.agh.to.clinicapp.exception.DoctorHasShiftException;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
@@ -110,7 +111,11 @@ public class DoctorService {
      *
      * @param id the unique identifier of the doctor to be deleted
      */
+    @Transactional
     public void deleteDoctor(int id){
+        if(!getDoctorById(id).shifts().isEmpty()){
+            throw new DoctorHasShiftException(id);
+        }
         doctorRepository.deleteById(id);
     }
 }

@@ -32,4 +32,14 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DoctorHasShiftException.class)
+    public String handleDoctorHasShift(DoctorHasShiftException ex) {
+        return ex.getMessage();
+    }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DoctorsOfficeHasShiftException.class)
+    public String handleDoctorsOfficeHasShift(DoctorsOfficeHasShiftException ex) {
+        return ex.getMessage();
+    }
 }

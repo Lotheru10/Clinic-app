@@ -35,7 +35,7 @@ public class DoctorsOfficeController {
             @ApiResponse(responseCode = "404", description = "Doctor's office with provided ID not found")
     })
     @GetMapping("/{id}")
-    public DoctorsOfficeDetailsDTO getDoctorsOfficeById( @Parameter(description = "ID of the doctor's office to be retrieved") @PathVariable int id){
+    public DoctorsOfficeDetailsDTO getDoctorsOfficeById( @Parameter(description = "ID of the doctor's office to be retrieved") @PathVariable("id") int id){
         return doctorsOfficeService.getDoctorsOfficeById(id);
     }
 
@@ -72,7 +72,7 @@ public class DoctorsOfficeController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDoctorsOffice(@Parameter(description = "ID of the doctor's office to delete") @PathVariable int id){
+    public void deleteDoctorsOffice(@Parameter(description = "ID of the doctor's office to delete") @PathVariable("id") int id){
         doctorsOfficeService.deleteDoctorsOffice(id);
     }
 }
