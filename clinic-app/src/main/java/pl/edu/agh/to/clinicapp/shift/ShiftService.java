@@ -50,6 +50,10 @@ public class ShiftService {
             throw new IllegalStateException("DoctorsOffice is busy");
         }
         Shift shift = new Shift(doctor, doctorsOffice, start, end);
+
+        doctor.getShifts().add(shift);
+        doctorsOffice.getShifts().add(shift);
+
         Shift saved = shiftRepository.save(shift);
 
         return new ShiftDTO(

@@ -12,10 +12,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
+import pl.edu.agh.to.clinicapp.doctor.DoctorService;
 import pl.edu.agh.to.clinicapp.doctor.Specialization;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeRepository;
+import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeService;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.CreateShiftDTO;
+import pl.edu.agh.to.clinicapp.exception.DoctorHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeHasShiftException;
 
 import java.time.LocalDateTime;
 
@@ -30,8 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ShiftIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
+    @Autowired private DoctorService doctorService;
     @Autowired private DoctorRepository doctorRepository;
+    @Autowired private DoctorsOfficeService officeService;
     @Autowired private DoctorsOfficeRepository officeRepository;
+    @Autowired private ShiftService shiftService;
     @Autowired private ShiftRepository shiftRepository;
     @Autowired private ObjectMapper objectMapper;
 
@@ -82,4 +89,21 @@ class ShiftIntegrationTest {
         assertInstanceOf(IllegalStateException.class, rootCause, "Oczekiwano IllegalStateException, a otrzymano: " + rootCause.getClass().getName());
         assertEquals("Doctor is busy", rootCause.getMessage());
     }
+
+    @Test
+    void cantDeleteDoctorAndOfficeWhileHaveShiftsTest() {
+        LocalDateTime start = LocalDateTime.now().plusDays(1).withHour(10).withMinute(0);
+        LocalDateTime end = start.plusHours(2);
+
+        CreateShiftDTO shiftDTO = new CreateShiftDTO(savedDoctor.getId(), savedOffice.getId(), start, end);
+        shiftService.addShift(shiftDTO);
+
+        assertThrows(DoctorHasShiftException.class, () -> {
+            doctorService.deleteDoctor(savedDoctor.getId());
+        });
+        assertThrows(DoctorsOfficeHasShiftException.class, () -> {
+            officeService.deleteDoctorsOffice(savedOffice.getId());
+        });
+    }
+
 }

@@ -115,11 +115,9 @@ public class DoctorIntegrationTests {
         assertThrows(DataIntegrityViolationException.class,
                 () -> {
                     doctorService.addDoctor(doctor2);
-                    doctorRepository.flush(); //to catch exception during transaction
+                    doctorRepository.flush();
                 });
     }
-
-
 
     //Endpoints tests
 
@@ -161,5 +159,4 @@ public class DoctorIntegrationTests {
                 .andExpect(status().isNoContent());
 
     }
-
 }
