@@ -1,0 +1,245 @@
+---
+config:
+  layout: elk
+  theme: redux-dark
+---
+classDiagram
+    class ClinicApp {
+        <<SpringBootApplication>>
+        +main(String[]) void
+    }
+    namespace ShiftPackage {
+        class Shift {
+            <<Entity>>
+            -int id
+            -Doctor doctor
+            -DoctorsOffice office
+            -LocalDateTime start
+            -LocalDateTime end
+        }
+
+        class ShiftRepository {
+            <<Interface>>
+            <<Repository>>
+            +doctorBusy(...) boolean
+            +doctorsOfficeBusy(...) boolean
+            +overlappingShifts(...) List~Shift~
+        }
+
+        class ShiftService {
+            <<Service>>
+            -ShiftRepository shiftRepository
+            -DoctorRepository doctorRepository
+            -DoctorsOfficeRepository doctorsOfficeRepository
+            +addShift(CreateShiftDTO) ShiftDTO
+        }
+
+        class ShiftController {
+            <<RestController>>
+            -ShiftService shiftService
+            +addShift(CreateShiftDTO) ShiftDTO
+        }
+        
+        class ShiftAssignmentService {
+            <<Service>>
+            -ShiftRepository shiftRepository
+            -DoctorRepository doctorRepository
+            -DoctorsOfficeRepository doctorsOfficeRepository
+            +checkAvailability(LocalDateTime, LocalDateTime) AvailabilityDTO
+        }
+
+        class ShiftAssignmentController {
+            <<RestController>>
+            -ShiftAssignmentService shiftAssignmentService
+            +getAvailability(...) AvailabilityDTO
+        }
+    }
+    namespace DoctorPackage {
+        class Doctor {
+            <<Entity>>
+            -int id
+            -Specialization specialization
+            -List~Shift~ shifts
+            +getShifts() List~Shift~
+        }
+
+        class Specialization {
+            <<Enumeration>>
+            KARDIOLOGIA
+            CHIRURGIA_OGOLNA
+            ...
+        }
+
+        class DoctorRepository { <<Interface>> }
+        
+        class DoctorService {
+            <<Service>>
+            +getDoctorById(int) DoctorDetailsDTO
+            +getDoctors() List~DoctorDTO~
+            -mapToDoctorShiftDTO(Shift) DoctorShiftDTO
+        }
+        
+        class DoctorController { <<RestController>> }
+    }
+    namespace OfficePackage {
+        class DoctorsOffice {
+            <<Entity>>
+            -int id
+            -String roomNumber
+            -List~Shift~ shifts
+            +getShifts() List~Shift~
+        }
+
+        class DoctorsOfficeRepository { <<Interface>> }
+        
+        class DoctorsOfficeService {
+            <<Service>>
+            +getDoctorsOfficeById(int) DoctorsOfficeDetailsDTO
+            -mapToDoctorOfficeShiftDTO(Shift) DoctorOfficeShiftDTO
+        }
+        
+        class DoctorsOfficeController { <<RestController>> }
+    }
+    namespace PatientPackage {
+        class Patient { <<Entity>> }
+        class PatientRepository { <<Interface>> }
+        class PatientService { <<Service>> }
+        class PatientController { <<RestController>> }
+    }
+    namespace ExceptionPackage {
+        class GlobalExceptionHandler {
+            <<RestControllerAdvice>>
+            +handleDoctorNotFound(...)
+            +handleDoctorsOfficeNotFound(...)
+            +handlePatientNotFound(...)
+            +handleDoctorHasShift(...)
+            +handleDoctorsOfficeHasShift(...)
+        }
+        class DoctorNotFoundException { <<Exception>> }
+        class DoctorsOfficeNotFoundException { <<Exception>> }
+        class PatientNotFoundException { <<Exception>> }
+        class DoctorHasShiftException { <<Exception>> }
+        class DoctorsOfficeHasShiftException { <<Exception>> }
+    }
+    namespace DTOPackage {
+        class CreateShiftDTO { <<Record>> }
+        class ShiftDTO { <<Record>> }
+        
+        class AvailabilityDTO { 
+            <<Record>> 
+            +Set~DoctorDTO~ freeDoctors
+            +Set~DoctorsOfficeDTO~ freeDoctorsOffices
+        }
+        
+        class DoctorDTO { <<Record>> }
+        class DoctorDetailsDTO { <<Record>> }
+        class DoctorShiftDTO { <<Record>> }
+        
+        class DoctorsOfficeDTO { <<Record>> }
+        class DoctorsOfficeDetailsDTO { <<Record>> }
+        class DoctorOfficeShiftDTO { <<Record>> }
+        
+        class CreateDoctorDTO { <<Record>> }
+        class CreateDoctorsOfficeDTO { <<Record>> }
+
+        class PatientDTO { <<Record>> }
+        class PatientDetailsDTO { <<Record>> }
+        class CreatePatientDTO { <<Record>> }
+
+    }
+    namespace DevPackage {
+        class ExampleDoctorController { <<Profile: dev>> }
+        class ExampleDoctorsFactory { <<Profile: dev>> }
+    }
+    Shift --> Doctor : "Many-to-One"
+    Shift --> DoctorsOffice : "Many-to-One"
+    Doctor --> Specialization : uses
+    Doctor *-- Shift : "One-to-Many"
+    DoctorsOffice *-- Shift : "One-to-Many"
+
+    ShiftRepository --|> JpaRepository
+    DoctorRepository --|> JpaRepository
+    DoctorsOfficeRepository --|> JpaRepository
+    PatientRepository --|> JpaRepository
+    ShiftService o--> ShiftRepository
+    ShiftService o--> DoctorRepository
+    ShiftService o--> DoctorsOfficeRepository
+    ShiftService ..> ShiftDTO : returns
+    ShiftService ..> CreateShiftDTO : uses
+    
+    ShiftAssignmentService o--> ShiftRepository
+    ShiftAssignmentService o--> DoctorRepository
+    ShiftAssignmentService o--> DoctorsOfficeRepository
+    ShiftAssignmentService ..> AvailabilityDTO : returns
+    DoctorService o--> DoctorRepository
+    DoctorService ..> DoctorDTO : returns
+    DoctorService ..> DoctorDetailsDTO : returns
+    DoctorService ..> DoctorShiftDTO : returns
+    DoctorService ..> DoctorDTO : uses
+    DoctorService ..> Doctor : uses
+    DoctorService ..> Shift : uses
+    DoctorService ..> CreateDoctorDTO : uses
+    
+    DoctorsOfficeService o--> DoctorsOfficeRepository
+    DoctorsOfficeService ..> DoctorsOfficeDetailsDTO : returns
+    DoctorsOfficeService ..> DoctorsOfficeDTO : returns
+    DoctorsOfficeService ..> DoctorOfficeShiftDTO : returns
+    DoctorsOfficeService ..> DoctorsOffice : uses
+    DoctorsOfficeService ..> CreateDoctorsOfficeDTO : uses
+    DoctorsOfficeService ..> Shift : uses
+
+    PatientService o--> PatientRepository
+    PatientService ..> PatientDTO : returns
+    PatientService ..> PatientDetailsDTO : returns
+    PatientService ..> Patient : uses
+    PatientService ..> CreatePatientDTO : uses
+    ShiftService ..> DoctorNotFoundException : throws
+    ShiftService ..> DoctorsOfficeNotFoundException : throws
+    
+    DoctorService ..> DoctorNotFoundException : throws
+    DoctorService ..> DoctorHasShiftException : throws
+    
+    DoctorsOfficeService ..> DoctorsOfficeNotFoundException : throws
+    DoctorsOfficeService ..> DoctorsOfficeHasShiftException : throws
+    
+    PatientService ..> PatientNotFoundException : throws
+
+    GlobalExceptionHandler ..> DoctorNotFoundException : handles
+    GlobalExceptionHandler ..> DoctorsOfficeNotFoundException : handles
+    GlobalExceptionHandler ..> PatientNotFoundException : handles
+    GlobalExceptionHandler ..> DoctorHasShiftException : handles
+    GlobalExceptionHandler ..> DoctorsOfficeHasShiftException : handles
+    CreateDoctorDTO *-- Specialization
+    DoctorDetailsDTO *-- Specialization
+    DoctorDTO *-- Specialization
+
+    AvailabilityDTO *-- DoctorDTO : contains
+    AvailabilityDTO *-- DoctorsOfficeDTO : contains
+    DoctorDetailsDTO *-- DoctorShiftDTO : contains
+    DoctorsOfficeDetailsDTO *-- DoctorOfficeShiftDTO : contains
+    ShiftController o--> ShiftService
+    ShiftController ..> ShiftDTO : returns
+    ShiftController ..> CreateShiftDTO : uses
+    
+    ShiftAssignmentController o--> ShiftAssignmentService
+    ShiftAssignmentController ..> AvailabilityDTO : returns    
+
+    DoctorController o--> DoctorService
+    DoctorController ..> DoctorDetailsDTO : returns
+    DoctorController ..> DoctorDTO : returns
+    DoctorController ..> CreateDoctorDTO : uses
+
+    DoctorsOfficeController o--> DoctorsOfficeService
+    DoctorsOfficeController ..> DoctorsOfficeDetailsDTO : returns
+    DoctorsOfficeController ..> DoctorsOfficeDTO : returns
+    DoctorsOfficeController ..> CreateDoctorsOfficeDTO : uses
+
+
+    PatientController o--> PatientService
+    PatientController ..> PatientDetailsDTO : returns
+    PatientController ..> PatientDTO : returns
+    PatientController ..> CreatePatientDTO : uses
+    ExampleDoctorController o--> DoctorRepository
+    ExampleDoctorsFactory ..> Doctor : creates instances
+ 
+    class JpaRepository { <<Interface>> }
