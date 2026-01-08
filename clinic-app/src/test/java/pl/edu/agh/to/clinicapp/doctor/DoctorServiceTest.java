@@ -6,16 +6,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.shift.Shift;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -106,5 +108,29 @@ public class DoctorServiceTest {
         verify(doctorRepository, times(1)).deleteById(id);
         verifyNoMoreInteractions(doctorRepository);
 
+    }
+
+    @Test
+    void getDoctorByIdMapShiftsCorrectly() {
+        int doctorId = 1;
+        Doctor doctor = new Doctor("Jan", "Kowalski", "123", Specialization.KARDIOLOGIA, "Adres");
+        doctor.setId(doctorId);
+
+        DoctorsOffice office = new DoctorsOffice("101", "RTG");
+        office.setId(5);
+
+        Shift shift = new Shift(doctor, office, LocalDateTime.now(), LocalDateTime.now().plusHours(2));
+        doctor.getShifts().add(shift);
+
+        when(doctorRepository.findById(doctorId)).thenReturn(Optional.of(doctor));
+
+        DoctorDetailsDTO res = doctorService.getDoctorById(doctorId);
+
+        assertEquals(doctorId, res.id());
+        assertEquals(1, res.shifts().size());
+
+        assertEquals(5, res.shifts().getFirst().officeId());
+        assertTrue(res.shifts().getFirst().officeName().contains("101"));
+        assertTrue(res.shifts().getFirst().officeName().contains("RTG"));
     }
 }

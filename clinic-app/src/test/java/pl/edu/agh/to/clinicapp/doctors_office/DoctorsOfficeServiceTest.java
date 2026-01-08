@@ -5,16 +5,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.to.clinicapp.doctor.Doctor;
+import pl.edu.agh.to.clinicapp.doctor.Specialization;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
 import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.shift.Shift;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -95,5 +98,29 @@ public class DoctorsOfficeServiceTest {
         doctorsOfficeService.deleteDoctorsOffice(id);
 
         verify(doctorsOfficeRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void getDoctorOfficeByIdMapShiftsCorrectly() {
+        int officeId = 10;
+        DoctorsOffice office = new DoctorsOffice("202", "Gabinet");
+        office.setId(officeId);
+
+        Doctor doctor = new Doctor("Anna", "Nowak", "999", Specialization.OKULISTYKA, "Adres");
+        doctor.setId(2);
+
+        Shift shift = new Shift(doctor, office, LocalDateTime.now(), LocalDateTime.now().plusHours(4));
+        office.getShifts().add(shift);
+
+        when(doctorsOfficeRepository.findById(officeId)).thenReturn(Optional.of(office));
+
+        DoctorsOfficeDetailsDTO res = doctorsOfficeService.getDoctorsOfficeById(officeId);
+
+        assertEquals(officeId, res.id());
+        assertEquals(1, res.shifts().size());
+
+        assertEquals(2, res.shifts().getFirst().doctorId());
+        assertTrue(res.shifts().getFirst().doctorName().contains("Anna"));
+        assertTrue(res.shifts().getFirst().doctorName().contains("Nowak"));
     }
 }
