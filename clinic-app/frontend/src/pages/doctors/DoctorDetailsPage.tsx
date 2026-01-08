@@ -20,6 +20,17 @@ export default function DoctorDetailsPage() {
         }
     };
 
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleString("en-UK", {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
     return (
         <div>
             <h2>Doctor details</h2>
@@ -42,8 +53,39 @@ export default function DoctorDetailsPage() {
                     </h3>
                     <p><strong>specialization:</strong> {doctor.specialization}</p>
                     <p><strong>addres:</strong> {doctor.address}</p>
+
+                    <div>
+                        <h4>Shifts plan:</h4>
+
+                        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
+                            <thead>
+                            <tr style={{ background: "#f9f9f9", textAlign: "left" }}>
+                                <th style={{ padding: "8px", borderBottom: "2px solid #ddd" }}>Office</th>
+                                <th style={{ padding: "8px", borderBottom: "2px solid #ddd" }}>From</th>
+                                <th style={{ padding: "8px", borderBottom: "2px solid #ddd" }}>To</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {doctor?.shifts.map((shift, index) => (
+                                <tr key={index} style={{ borderBottom: "1px solid #eee" }}>
+                                    <td style={{ padding: "8px" }}>
+                                        <strong>{shift.officeName}</strong>
+                                    </td>
+                                    <td style={{ padding: "8px" }}>{formatDate(shift.start)}</td>
+                                    <td style={{ padding: "8px" }}>{formatDate(shift.end)}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+
+                    </div>
+
                 </div>
             )}
+
+
+
+
         </div>
     );
 }

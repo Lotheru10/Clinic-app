@@ -32,7 +32,7 @@ public class ShiftAssignmentController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
     })
 
-    @GetMapping("/avaibility")
+    @GetMapping("/availability")
     public AvailabilityDTO getAvailability(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam("end")   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
