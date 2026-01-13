@@ -1,10 +1,13 @@
 package pl.edu.agh.to.clinicapp.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,12 +37,16 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DoctorHasShiftException.class)
-    public String handleDoctorHasShift(DoctorHasShiftException ex) {
-        return ex.getMessage();
+    public ResponseEntity<Object> handleDoctorHasShift(DoctorHasShiftException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
     }
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DoctorsOfficeHasShiftException.class)
-    public String handleDoctorsOfficeHasShift(DoctorsOfficeHasShiftException ex) {
-        return ex.getMessage();
+    public ResponseEntity<Object> handleDoctorsOfficeHasShift(DoctorsOfficeHasShiftException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
     }
 }
