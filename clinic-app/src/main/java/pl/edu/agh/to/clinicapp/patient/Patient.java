@@ -1,16 +1,9 @@
-package pl.edu.agh.to.clinicapp.doctor;
+package pl.edu.agh.to.clinicapp.patient;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import pl.edu.agh.to.clinicapp.shift.Shift;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Doctor {
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,27 +20,18 @@ public class Doctor {
     @Column(nullable = false, unique = true)
     private String peselNumber;
 
-    @NotNull
-    @Column(nullable = false)
-    @Enumerated(jakarta.persistence.EnumType.STRING)
-    private Specialization specialization;
-
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "doctor" )
-    private final List<Shift> shifts = new ArrayList<>();
 
-
-    public Doctor(String firstName, String lastName, String peselNumber, Specialization specialization, String address) {
+    public Patient(String firstName, String lastName, String peselNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.peselNumber = peselNumber;
-        this.specialization = specialization;
         this.address = address;
     }
 
-    public Doctor() {
+    public Patient() {
 
     }
 
@@ -67,16 +51,8 @@ public class Doctor {
         return peselNumber;
     }
 
-    public Specialization getSpecialization() {
-        return specialization;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public List<Shift> getShifts() {
-        return shifts;
     }
 
     public void setFirstName(String firstName) {
@@ -89,10 +65,6 @@ public class Doctor {
 
     public void setPeselNumber(String peselNumber) {
         this.peselNumber = peselNumber;
-    }
-
-    public void setSpecialization(Specialization specialization) {
-        this.specialization = specialization;
     }
 
     public void setAddress(String address) {

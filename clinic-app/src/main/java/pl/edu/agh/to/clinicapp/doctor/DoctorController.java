@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class DoctorController {
     })
     @GetMapping("/{id}")
     public DoctorDetailsDTO getDoctorById(
-            @Parameter(description = "ID of the doctor to be retrieved") @PathVariable int id) {
+            @Parameter(description = "ID of the doctor to be retrieved") @PathVariable("id") int id) {
         return doctorService.getDoctorById(id);
     }
 
@@ -73,7 +73,7 @@ public class DoctorController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDoctor(
-            @Parameter(description = "ID of the doctor to delete") @PathVariable int id){
+            @Parameter(description = "ID of the doctor to delete") @PathVariable("id") int id){
         doctorService.deleteDoctor(id);
     }
 }

@@ -4,10 +4,15 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorOfficeShiftDTO;
+import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorShiftDTO;
+import pl.edu.agh.to.clinicapp.exception.DoctorHasShiftException;
 import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.List;
 
@@ -61,10 +66,22 @@ public class DoctorService {
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getSpecialization(),
-                doctor.getAddress()
+                doctor.getAddress(),
+                doctor.getShifts().stream()
+                        .map(this::mapToDoctorShiftDTO)
+                        .toList()
         );
     }
 
+    private DoctorShiftDTO mapToDoctorShiftDTO(Shift shift) {
+        DoctorsOffice o = shift.getOffice();
+        return new DoctorShiftDTO(
+                o.getId(),
+                o.getRoomNumber()+ ". " + o.getRoomDescription(),
+                shift.getStart(),
+                shift.getEnd()
+        );
+    }
     /**
      * Registers a new doctor in the system.
      * <p>
@@ -94,7 +111,11 @@ public class DoctorService {
      *
      * @param id the unique identifier of the doctor to be deleted
      */
+    @Transactional
     public void deleteDoctor(int id){
+        if(!getDoctorById(id).shifts().isEmpty()){
+            throw new DoctorHasShiftException(id);
+        }
         doctorRepository.deleteById(id);
     }
 }

@@ -12,8 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.agh.to.clinicapp.dto.CreateDoctorDTO;
-import pl.edu.agh.to.clinicapp.dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
+import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -115,11 +115,9 @@ public class DoctorIntegrationTests {
         assertThrows(DataIntegrityViolationException.class,
                 () -> {
                     doctorService.addDoctor(doctor2);
-                    doctorRepository.flush(); //to catch exception during transaction
+                    doctorRepository.flush();
                 });
     }
-
-
 
     //Endpoints tests
 
@@ -161,5 +159,4 @@ public class DoctorIntegrationTests {
                 .andExpect(status().isNoContent());
 
     }
-
 }

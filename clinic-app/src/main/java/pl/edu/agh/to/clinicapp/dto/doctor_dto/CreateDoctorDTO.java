@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.dto;
+package pl.edu.agh.to.clinicapp.dto.doctor_dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
