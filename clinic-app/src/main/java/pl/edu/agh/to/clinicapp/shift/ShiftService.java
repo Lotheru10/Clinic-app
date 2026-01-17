@@ -66,4 +66,11 @@ public class ShiftService {
                 saved.getEnd()
         );
     }
+
+    /**
+     * Deletes a shift from the system based on its ID.
+     *
+     * @param id the unique identifier of the shift to be deleted
+     */
+    public void deleteShift(int id) { shiftRepository.deleteById(id); }
 }

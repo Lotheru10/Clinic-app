@@ -13,6 +13,7 @@ import DoctorsOfficeDetailsPage from "./pages/doctorsoffice/DoctorsOfficeDetails
 import DoctorsOfficeAddPage from "./pages/doctorsoffice/DoctorsOfficeAddPage.tsx";
 import DoctorsOfficeDeletePage from "./pages/doctorsoffice/DoctorsOfficeDeletePage.tsx";
 import ShiftAddPage from "./pages/shifts/ShiftAddPage.tsx";
+import ShiftDeletePage from "./pages/shifts/ShiftDeletePage.tsx";
 
 function App() {
 
@@ -59,6 +60,7 @@ function App() {
                   <h3>Shift</h3>
                   <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
                       <NavLink to="/shifts/create">Add shift</NavLink>
+                      <NavLink to="/shifts/delete">Delete shift</NavLink>
                   </div>
               </div>
 
@@ -85,6 +87,7 @@ function App() {
                   <Route path="/doctorsOffices/delete" element={<DoctorsOfficeDeletePage />} />
 
                   <Route path="/shifts/create" element={<ShiftAddPage />} />
+                  <Route path="/shifts/delete" element={<ShiftDeletePage />} />
               </Routes>
           </div>
       </div>
