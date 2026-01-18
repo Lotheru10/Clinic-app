@@ -19,3 +19,10 @@ export function createShift(payload: CreateShiftDTO) {
         body: JSON.stringify(payload),
     });
 }
+
+export function deleteShift(id: number){
+    return apiFetch<void>(`/api/shifts/${id}`, {
+            method: "DELETE",
+        }
+    );
+}

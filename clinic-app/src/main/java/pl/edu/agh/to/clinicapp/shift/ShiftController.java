@@ -1,6 +1,7 @@
 package pl.edu.agh.to.clinicapp.shift;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,5 +35,19 @@ public class ShiftController {
     @ResponseStatus(HttpStatus.CREATED)
     public ShiftDTO addShift(@Valid @RequestBody CreateShiftDTO createShiftDTO) {
         return shiftService.addShift(createShiftDTO);
+    }
+
+    @Operation(
+            summary = "Delete a shift",
+            description = "Removes a shift from the system based on its ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Shift deleted successfully"),
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShift(
+            @Parameter(description = "ID of the shift to delete") @PathVariable("id") int id){
+        shiftService.deleteShift(id);
     }
 }
