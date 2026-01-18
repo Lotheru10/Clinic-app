@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.CreatePatientDTO;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.PatientDTO;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.PatientDetailsDTO;
-import pl.edu.agh.to.clinicapp.exception.PatientNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientNotFoundException;
 
 import java.util.List;
 

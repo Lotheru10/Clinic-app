@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.exception;
+package pl.edu.agh.to.clinicapp.exception.appointment_exceptions;
 
 import java.time.LocalDateTime;
 

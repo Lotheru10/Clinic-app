@@ -9,8 +9,8 @@ import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorShiftDTO;
-import pl.edu.agh.to.clinicapp.exception.DoctorHasShiftException;
-import pl.edu.agh.to.clinicapp.exception.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorNotFoundException;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.List;

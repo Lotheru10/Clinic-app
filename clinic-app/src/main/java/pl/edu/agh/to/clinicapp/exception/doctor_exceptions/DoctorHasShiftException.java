@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.exception;
+package pl.edu.agh.to.clinicapp.exception.doctor_exceptions;
 
 public class DoctorHasShiftException extends RuntimeException {
     public DoctorHasShiftException(int id) {

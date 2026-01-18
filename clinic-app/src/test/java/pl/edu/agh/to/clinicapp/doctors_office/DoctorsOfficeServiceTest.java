@@ -10,7 +10,7 @@ import pl.edu.agh.to.clinicapp.doctor.Specialization;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
-import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.time.LocalDateTime;
