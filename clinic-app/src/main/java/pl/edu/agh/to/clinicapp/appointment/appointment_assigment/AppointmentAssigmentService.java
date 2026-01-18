@@ -55,6 +55,9 @@ public class AppointmentAssigmentService {
         for (Shift shift: shifts){
             LocalDateTime slotStart = getLater(shift.getStart(), start);
             LocalDateTime slotEnd = getEarlier(shift.getEnd(), end);
+
+            slotStart = ceilToDuration(slotStart);
+
             Set<LocalDateTime> busySlots = busyStartsbyShift.getOrDefault(shift.getId(), Set.of());
 
             while(!slotStart.plusMinutes(DURATION).isAfter(slotEnd)){
@@ -77,5 +80,11 @@ public class AppointmentAssigmentService {
     }
     private LocalDateTime getEarlier(LocalDateTime date1, LocalDateTime date2){
         return (date1.isAfter(date2)) ? date2 : date1;
+    }
+    private LocalDateTime ceilToDuration(LocalDateTime date){
+        date = date.withSecond(0).withNano(0);
+        int minutes = date.getMinute();
+        int mod = minutes % DURATION;
+        return (mod ==0) ? date : date.plusMinutes(DURATION - mod);
     }
 }
