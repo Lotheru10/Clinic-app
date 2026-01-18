@@ -44,7 +44,7 @@ public class AppointmentController {
             description = "Removes an appointment from the system based on its ID."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Shift deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Appointment deleted successfully"),
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
