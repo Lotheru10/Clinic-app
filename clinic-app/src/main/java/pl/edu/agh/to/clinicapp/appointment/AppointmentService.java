@@ -60,10 +60,5 @@ public class AppointmentService {
                 start,
                 end
         );
-
-
-
-
-
     }
 }
