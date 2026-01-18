@@ -75,6 +75,7 @@ public class DoctorService {
     private DoctorShiftDTO mapToDoctorShiftDTO(Shift shift) {
         DoctorsOffice o = shift.getOffice();
         return new DoctorShiftDTO(
+                shift.getId(),
                 o.getId(),
                 o.getRoomNumber()+ ". " + o.getRoomDescription(),
                 shift.getStart(),

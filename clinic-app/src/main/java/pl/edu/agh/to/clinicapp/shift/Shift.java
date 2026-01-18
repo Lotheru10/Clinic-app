@@ -1,16 +1,9 @@
 package pl.edu.agh.to.clinicapp.shift;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import pl.edu.agh.to.clinicapp.doctor.Doctor;
-import pl.edu.agh.to.clinicapp.doctor.Specialization;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
-import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
-import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
-
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "shifts")
