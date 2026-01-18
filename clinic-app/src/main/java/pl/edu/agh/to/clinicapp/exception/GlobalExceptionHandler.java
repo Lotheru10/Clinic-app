@@ -6,6 +6,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pl.edu.agh.to.clinicapp.exception.appointment_exceptions.AppointmentSlotTakenException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientHasAppointmentException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.shift_exceptions.ShiftNotFoundException;
 
 import java.util.Map;
 

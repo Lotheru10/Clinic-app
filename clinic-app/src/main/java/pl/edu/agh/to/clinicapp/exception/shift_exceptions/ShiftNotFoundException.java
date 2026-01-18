@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.exception;
+package pl.edu.agh.to.clinicapp.exception.shift_exceptions;
 
 public class ShiftNotFoundException extends RuntimeException {
     public ShiftNotFoundException(int id) {

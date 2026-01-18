@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.exception;
+package pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions;
 
 public class DoctorsOfficeNotFoundException extends RuntimeException {
     public DoctorsOfficeNotFoundException(int id) {
