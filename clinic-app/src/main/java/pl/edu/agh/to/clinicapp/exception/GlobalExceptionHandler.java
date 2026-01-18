@@ -49,4 +49,39 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("message", ex.getMessage()));
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(PatientHasAppointmentException.class)
+    public ResponseEntity<Object> handlePatientHasAppointment(PatientHasAppointmentException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(AppointmentSlotTakenException.class)
+    public ResponseEntity<Object> handleAppointmentSlotTaken(AppointmentSlotTakenException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    // 3. Obsługa braku Shift (używane w AppointmentService)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ShiftNotFoundException.class)
+    public ResponseEntity<Object> handleShiftNotFound(ShiftNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    // 4. Obsługa IllegalArgumentException (np. wizyta poza godzinami shiftu)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
 }
