@@ -1,20 +1,28 @@
 import { useState } from "react";
+
 import { getDoctor } from "../../api/doctors";
+
 import type { DoctorDetailsDTO } from "../../types/doctor.ts";
+
 import { deleteShift } from "../../api/shifts";
 
 export default function DoctorDetailsPage() {
   const [id, setId] = useState<string>("");
+
   const [doctor, setDoctor] = useState<DoctorDetailsDTO | null>(null);
+
   const [msg, setMsg] = useState<string>("");
 
   const load = async () => {
     setMsg("");
+
     setDoctor(null);
 
     const parsed = Number(id);
+
     try {
       const data = await getDoctor(parsed);
+
       setDoctor(data);
     } catch (e) {
       setMsg(`Error: ${e instanceof Error ? e.message : "unknown"}`);
@@ -28,6 +36,7 @@ export default function DoctorDetailsPage() {
 
     try {
       await deleteShift(shiftId);
+
       await load();
     } catch (e) {
       setMsg(
@@ -39,10 +48,15 @@ export default function DoctorDetailsPage() {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-UK", {
       weekday: "short",
+
       year: "numeric",
+
       month: "numeric",
+
       day: "numeric",
+
       hour: "2-digit",
+
       minute: "2-digit",
     });
   };
@@ -54,8 +68,11 @@ export default function DoctorDetailsPage() {
       <div
         style={{
           display: "flex",
+
           gap: 10,
+
           alignItems: "center",
+
           flexWrap: "wrap",
         }}
       >
@@ -64,6 +81,7 @@ export default function DoctorDetailsPage() {
           onChange={(e) => setId(e.target.value)}
           style={{ width: 160 }}
         />
+
         <button onClick={() => void load()}>Find</button>
       </div>
 
@@ -73,17 +91,22 @@ export default function DoctorDetailsPage() {
         <div
           style={{
             marginTop: 12,
+
             padding: 12,
+
             border: "1px solid #ddd",
+
             borderRadius: 12,
           }}
         >
           <h3 style={{ marginTop: 0 }}>
             {doctor.firstName} {doctor.lastName}
           </h3>
+
           <p>
             <strong>specialization:</strong> {doctor.specialization}
           </p>
+
           <p>
             <strong>addres:</strong> {doctor.address}
           </p>
@@ -94,7 +117,9 @@ export default function DoctorDetailsPage() {
             <table
               style={{
                 width: "100%",
+
                 borderCollapse: "collapse",
+
                 fontSize: "0.9rem",
               }}
             >
@@ -105,16 +130,19 @@ export default function DoctorDetailsPage() {
                   >
                     Office
                   </th>
+
                   <th
                     style={{ padding: "8px", borderBottom: "2px solid #ddd" }}
                   >
                     From
                   </th>
+
                   <th
                     style={{ padding: "8px", borderBottom: "2px solid #ddd" }}
                   >
                     To
                   </th>
+
                   <th
                     style={{ padding: "8px", borderBottom: "2px solid #ddd" }}
                   >
@@ -122,6 +150,7 @@ export default function DoctorDetailsPage() {
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {doctor.shifts && doctor.shifts.length > 0 ? (
                   doctor.shifts.map((shift, index) => (
@@ -129,21 +158,29 @@ export default function DoctorDetailsPage() {
                       <td style={{ padding: "8px" }}>
                         <strong>{shift.officeName}</strong>
                       </td>
+
                       <td style={{ padding: "8px" }}>
                         {formatDate(shift.start)}
                       </td>
+
                       <td style={{ padding: "8px" }}>
                         {formatDate(shift.end)}
                       </td>
+
                       <td style={{ padding: "8px" }}>
                         <button
                           onClick={() => handleDeleteShift(shift.id)}
                           style={{
                             backgroundColor: "#ff4d4d",
+
                             color: "white",
+
                             border: "none",
+
                             padding: "5px 10px",
+
                             cursor: "pointer",
+
                             borderRadius: "4px",
                           }}
                         >
@@ -158,7 +195,9 @@ export default function DoctorDetailsPage() {
                       colSpan={4}
                       style={{
                         padding: "12px",
+
                         textAlign: "center",
+
                         color: "#888",
                       }}
                     >

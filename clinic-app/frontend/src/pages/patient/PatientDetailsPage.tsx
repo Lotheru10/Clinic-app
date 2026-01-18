@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getPatient } from "../../api/patients";
-import {} from "../../api/appointment";
+import { deleteAppointment } from "../../api/appointment";
 import type { PatientDetailsDTO } from "../../types/patient.ts";
 
 export default function PatientDetailsPage() {
@@ -21,17 +21,18 @@ export default function PatientDetailsPage() {
     }
   };
 
-  //const handleCancelAppointment = async (appointmentId: number) => {
-  //      if (!confirm("Are you sure you want to cancel this appointment?")) return;
-  //
-  //      try {
-  //          await deleteAppointment(appointmentId);
-  //          // Odświeżamy dane pacjenta po usunięciu
-  //          await load();
-  //      } catch (e) {
-  //          setMsg(`Error cancelling appointment: ${e instanceof Error ? e.message : "unknown"}`);
-  //      }
-  //  };
+  const handleCancelAppointment = async (appointmentId: number) => {
+    if (!confirm("Are you sure you want to cancel this appointment?")) return;
+
+    try {
+      await deleteAppointment(appointmentId);
+      await load();
+    } catch (e) {
+      setMsg(
+        `Error cancelling appointment: ${e instanceof Error ? e.message : "unknown"}`,
+      );
+    }
+  };
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "-";
@@ -132,7 +133,7 @@ export default function PatientDetailsPage() {
                       <td style={{ padding: "8px" }}>{appt.officeName}</td>
                       <td style={{ padding: "8px" }}>
                         <button
-                          //onClick={() => handleCancelAppointment(appt.id)}
+                          onClick={() => handleCancelAppointment(appt.id)}
                           style={{
                             backgroundColor: "#ff4d4d",
                             color: "white",

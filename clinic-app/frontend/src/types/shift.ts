@@ -16,6 +16,7 @@ export interface DoctorShiftDTO {
   start: string;
   end: string;
 }
+
 export interface ShiftDTO {
   id: number;
   doctorId: number;

@@ -32,3 +32,9 @@ export function addAppointment(
     body: JSON.stringify(payload),
   });
 }
+
+export function deleteAppointment(id: number) {
+  return apiFetch<void>(`${APPOINTMENT_URL}/${id}`, {
+    method: "DELETE",
+  });
+}
