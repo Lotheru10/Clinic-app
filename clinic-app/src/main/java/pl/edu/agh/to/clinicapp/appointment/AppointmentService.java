@@ -61,5 +61,10 @@ public class AppointmentService {
                 start,
                 end
         );
+
+
+    }
+    public void deleteAppointment(int id){
+        appointmentRepository.deleteById(id);
     }
 }
