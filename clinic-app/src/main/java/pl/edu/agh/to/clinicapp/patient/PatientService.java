@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import pl.edu.agh.to.clinicapp.appointment.Appointment;
+import pl.edu.agh.to.clinicapp.dto.appointment_dto.AppointmentDTO;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.CreatePatientDTO;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.PatientDTO;
 import pl.edu.agh.to.clinicapp.dto.patient_dto.PatientDetailsDTO;
@@ -59,10 +61,22 @@ public class PatientService {
                 patient.getId(),
                 patient.getFirstName(),
                 patient.getLastName(),
-                patient.getAddress()
+                patient.getAddress(),
+                patient.getAppointments().stream()
+                        .map(this::mapToAppointmentDTO)
+                        .toList()
         );
     }
 
+    private AppointmentDTO mapToAppointmentDTO(Appointment a){
+        return new AppointmentDTO(
+                a.getId(),
+                a.getShift().getDoctor().getFirstName() + " " + a.getShift().getDoctor().getFirstName(),
+                a.getShift().getOffice().getRoomNumber(),
+                a.getStart(),
+                a.getEnd()
+        );
+    }
     /**
      * Registers a new patient in the system.
      * <p>

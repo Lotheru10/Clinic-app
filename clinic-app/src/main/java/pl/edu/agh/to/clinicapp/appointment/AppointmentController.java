@@ -1,6 +1,7 @@
 package pl.edu.agh.to.clinicapp.appointment;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,11 +32,24 @@ public class AppointmentController {
             @ApiResponse(responseCode = "404", description = "Patient or shift not found"),
             @ApiResponse(responseCode = "409", description = "Appointment slot already taken")
     })
-
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AppointmentDTO addAppointment(@Valid @RequestBody CreateAppointmentDTO createAppointmentDTO){
         return appointmentService.addAppointment(createAppointmentDTO);
+    }
+
+
+    @Operation(
+            summary = "Delete an appointment",
+            description = "Removes an appointment from the system based on its ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Shift deleted successfully"),
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShift(
+            @Parameter(description = "ID of the appointment to delete") @PathVariable("id") int id){
+        appointmentService.deleteAppointment(id);
     }
 }
