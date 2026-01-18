@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
@@ -33,6 +35,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
+
+    @Query("""
+        select a from Appointment a
+        where a.shift.id in :shiftIds
+        order by a.start
+        """)
+    List<Appointment> findByShiftIds(@Param("shiftIds") Set<Integer> shiftIds);
 
 }
 

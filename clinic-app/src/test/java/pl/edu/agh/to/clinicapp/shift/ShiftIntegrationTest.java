@@ -18,8 +18,8 @@ import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeRepository;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOfficeService;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.CreateShiftDTO;
-import pl.edu.agh.to.clinicapp.exception.DoctorHasShiftException;
-import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeHasShiftException;
 
 import java.time.LocalDateTime;
 

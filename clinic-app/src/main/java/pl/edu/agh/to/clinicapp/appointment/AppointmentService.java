@@ -2,16 +2,17 @@ package pl.edu.agh.to.clinicapp.appointment;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.dto.appointment_dto.AppointmentDTO;
 import pl.edu.agh.to.clinicapp.dto.appointment_dto.CreateAppointmentDTO;
-import pl.edu.agh.to.clinicapp.exception.*;
+import pl.edu.agh.to.clinicapp.exception.appointment_exceptions.AppointmentSlotTakenException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientHasAppointmentException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.shift_exceptions.ShiftNotFoundException;
 import pl.edu.agh.to.clinicapp.patient.Patient;
 import pl.edu.agh.to.clinicapp.patient.PatientRepository;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 import pl.edu.agh.to.clinicapp.shift.ShiftRepository;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
