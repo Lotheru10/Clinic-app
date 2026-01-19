@@ -19,8 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @ExtendWith(MockitoExtension.class)
@@ -92,13 +91,16 @@ public class DoctorsOfficeServiceTest {
     }
 
     @Test
-    void deleteDoctorsOfficeCallRepository() {
-        int id = 5;
+    void deleteDoctorThrowsWhenNotFound() {
+        int id = 33;
+        when(doctorsOfficeRepository.findById(id)).thenReturn(Optional.empty());
 
-        doctorsOfficeService.deleteDoctorsOffice(id);
+        assertThrows(DoctorsOfficeNotFoundException.class, () -> doctorsOfficeService.deleteDoctorsOffice(id));
 
-        verify(doctorsOfficeRepository, times(1)).deleteById(id);
+        verify(doctorsOfficeRepository).findById(id);
+        verify(doctorsOfficeRepository, never()).deleteById(anyInt());
     }
+
 
     @Test
     void getDoctorOfficeByIdMapShiftsCorrectly() {
