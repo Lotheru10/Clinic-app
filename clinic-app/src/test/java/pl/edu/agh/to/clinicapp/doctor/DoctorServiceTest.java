@@ -101,14 +101,16 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void deleteDoctorCallsDelete(){
-        int id = 1;
-        doctorService.deleteDoctor(id);
+    void deleteDoctorThrowsWhenNotFound() {
+        int id = 33;
+        when(doctorRepository.findById(id)).thenReturn(Optional.empty());
 
-        verify(doctorRepository, times(1)).deleteById(id);
-        verifyNoMoreInteractions(doctorRepository);
+        assertThrows(DoctorNotFoundException.class, () -> doctorService.deleteDoctor(id));
 
+        verify(doctorRepository).findById(id);
+        verify(doctorRepository, never()).deleteById(anyInt());
     }
+
 
     @Test
     void getDoctorByIdMapShiftsCorrectly() {
