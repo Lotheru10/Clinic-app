@@ -46,6 +46,8 @@ public class PatientServiceTest {
 
         verify(patientRepository, times(1)).findAll();
         verifyNoMoreInteractions(patientRepository);
+
+
     }
 
     @Test

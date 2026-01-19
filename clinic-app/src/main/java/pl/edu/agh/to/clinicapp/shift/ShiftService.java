@@ -2,6 +2,7 @@ package pl.edu.agh.to.clinicapp.shift;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.to.clinicapp.appointment.AppointmentRepository;
 import pl.edu.agh.to.clinicapp.doctor.Doctor;
 import pl.edu.agh.to.clinicapp.doctor.DoctorRepository;
 import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
@@ -10,6 +11,7 @@ import pl.edu.agh.to.clinicapp.dto.shift_dto.CreateShiftDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.ShiftDTO;
 import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorNotFoundException;
 import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.shift_exceptions.ShiftHasAppointmentException;
 
 import java.time.LocalDateTime;
 
@@ -19,11 +21,13 @@ public class ShiftService {
     private final ShiftRepository shiftRepository;
     private final DoctorRepository doctorRepository;
     private final DoctorsOfficeRepository doctorsOfficeRepository;
+    private final AppointmentRepository appointmentRepository;
 
-    public ShiftService(ShiftRepository shiftRepository, DoctorRepository doctorRepository, DoctorsOfficeRepository doctorsOfficeRepository) {
+    public ShiftService(ShiftRepository shiftRepository, DoctorRepository doctorRepository, DoctorsOfficeRepository doctorsOfficeRepository, AppointmentRepository appointmentRepository) {
         this.shiftRepository = shiftRepository;
         this.doctorRepository = doctorRepository;
         this.doctorsOfficeRepository = doctorsOfficeRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
 
@@ -72,5 +76,9 @@ public class ShiftService {
      *
      * @param id the unique identifier of the shift to be deleted
      */
-    public void deleteShift(int id) { shiftRepository.deleteById(id); }
+    public void deleteShift(int id) {
+        if(appointmentRepository.existsByShiftId(id)){
+            throw new ShiftHasAppointmentException(id);
+        }
+        shiftRepository.deleteById(id); }
 }

@@ -43,6 +43,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
         """)
     List<Appointment> findByShiftIds(@Param("shiftIds") Set<Integer> shiftIds);
 
+    boolean existsByShiftId(int shift_id);
 }
 
 

@@ -32,7 +32,7 @@ public class Patient {
         return appointments;
     }
 
-    @OneToMany(mappedBy = "patient" )
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Appointment> appointments = new ArrayList<>();
 
 
