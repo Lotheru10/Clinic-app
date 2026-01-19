@@ -1,27 +1,24 @@
-package pl.edu.agh.to.clinicapp.appointment.appointment_assigment;
+package pl.edu.agh.to.clinicapp.appointment.appointment_assignment;
 
 import org.springframework.stereotype.Service;
 import pl.edu.agh.to.clinicapp.appointment.Appointment;
 import pl.edu.agh.to.clinicapp.appointment.AppointmentRepository;
-import pl.edu.agh.to.clinicapp.appointment.AppointmentService;
 import pl.edu.agh.to.clinicapp.dto.appointment_dto.AvailableAppointmentSlotDTO;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 import pl.edu.agh.to.clinicapp.shift.ShiftRepository;
-import pl.edu.agh.to.clinicapp.shift.ShiftService;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-public class AppointmentAssigmentService {
+public class AppointmentAssingmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ShiftRepository shiftRepository;
     private final static int DURATION = 15;
 
 
-    public AppointmentAssigmentService(AppointmentRepository appointmentRepository, ShiftRepository shiftRepository) {
+    public AppointmentAssingmentService(AppointmentRepository appointmentRepository, ShiftRepository shiftRepository) {
         this.appointmentRepository = appointmentRepository;
         this.shiftRepository = shiftRepository;
     }

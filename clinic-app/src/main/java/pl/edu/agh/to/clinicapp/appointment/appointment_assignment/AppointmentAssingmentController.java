@@ -1,4 +1,4 @@
-package pl.edu.agh.to.clinicapp.appointment.appointment_assigment;
+package pl.edu.agh.to.clinicapp.appointment.appointment_assignment;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/appointment-assigment")
 @Tag(name = "Appointments assigment", description = "API for managing appointments assigment")
-public class AppointmentAssigmentController {
+public class AppointmentAssingmentController {
 
 
-    private final AppointmentAssigmentService appointmentAssigmentService;
+    private final AppointmentAssingmentService appointmentAssingmentService;
 
-    public AppointmentAssigmentController(AppointmentAssigmentService appointmentAssigmentService) {
-        this.appointmentAssigmentService = appointmentAssigmentService;
+    public AppointmentAssingmentController(AppointmentAssingmentService appointmentAssingmentService) {
+        this.appointmentAssingmentService = appointmentAssingmentService;
     }
 
 
@@ -42,7 +42,7 @@ public class AppointmentAssigmentController {
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam("end")   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ){
-        return appointmentAssigmentService.getAvailableSlots(doctorId, start, end);
+        return appointmentAssingmentService.getAvailableSlots(doctorId, start, end);
     }
 
 }
