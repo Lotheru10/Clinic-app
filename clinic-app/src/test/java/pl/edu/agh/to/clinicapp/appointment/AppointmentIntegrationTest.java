@@ -24,7 +24,9 @@ import pl.edu.agh.to.clinicapp.shift.ShiftRepository;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -119,5 +121,21 @@ class AppointmentIntegrationTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.message", containsString("has appointment at given time")));
+    }
+
+    @Test
+    void shouldDeleteAppointmentSuccessfully() throws Exception {
+        // given
+        LocalDateTime start = savedShift.getStart();
+        Appointment appointment = new Appointment(savedShift, start, start.plusMinutes(15), savedPatient);
+        appointment = appointmentRepository.save(appointment);
+
+        // when & then
+        mockMvc.perform(delete("/api/appointments/{id}", appointment.getId()))
+                .andExpect(status().isNoContent());
+
+        // Verify database
+        boolean exists = appointmentRepository.existsById(appointment.getId());
+        assertFalse(exists, "Appointment should be removed from DB");
     }
 }
