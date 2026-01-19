@@ -9,6 +9,7 @@ import { getAvailableSlots, addAppointment } from "../../api/appointment.ts";
 import type { PatientDTO } from "../../types/patient.ts";
 import type { DoctorDTO } from "../../types/doctor.ts";
 import type { AvailableAppointmentSlotDTO } from "../../types/appointment.ts";
+import "../../css/calendar.css";
 
 // --- UTILS ---
 
@@ -319,6 +320,7 @@ export default function AppointmentCreatePage() {
           <h3>Step 3: Select Date & Time</h3>
 
           <Calendar
+              className="my-calendar"
             onChange={(val) => setDate(val as Date)}
             value={date}
             onActiveStartDateChange={({ activeStartDate }) =>
@@ -387,8 +389,8 @@ const styles = {
     borderCollapse: "collapse" as const,
     marginBottom: 20,
   },
-  thead: { background: "#eee" },
-  theadBlue: { background: "#e0f7fa" },
+  thead: { background: "#594242" },
+  theadBlue: { background: "#90aaaf" },
   th: { padding: 8, textAlign: "left" as const },
   tr: { borderBottom: "1px solid #ddd" },
   td: { padding: 8 },
@@ -397,7 +399,7 @@ const styles = {
     padding: "10px 15px",
     border: "1px solid #ccc",
     borderRadius: 8,
-    background: "#f9f9f9",
+    background: "#876b6b",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -431,4 +433,5 @@ const styles = {
     fontSize: "1.1rem",
     transition: "background 0.3s",
   },
+
 };

@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { checkAvailability, createShift } from "../../api/shifts.ts";
-import type {AvailabilityDTO} from "../../types/shift.ts";
+import type {AvailabilityDTO, ShiftDTO} from "../../types/shift.ts";
 
 export default function ShiftAddPage() {
-    const navigate = useNavigate();
 
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
@@ -17,6 +15,8 @@ export default function ShiftAddPage() {
     const [selectedOfficeId, setSelectedOfficeId] = useState<number | "">("");
 
     const [msg, setMsg] = useState("");
+    const [createdShift, setCreatedShift] = useState<ShiftDTO | null>(null);
+
 
     const handleCheck = async () => {
         if (!start || !end) {
@@ -44,13 +44,14 @@ export default function ShiftAddPage() {
         if (!selectedDocId || !selectedOfficeId) return;
 
         try {
-            await createShift({
+            const shift = await createShift({
                 doctorId: Number(selectedDocId),
                 officeId: Number(selectedOfficeId),
-                start: start,
-                end: end
+                start,
+                end
             });
-            navigate("/doctors");
+
+            setCreatedShift(shift);
         } catch (e) {
             setMsg("Could not add shift.");
             console.error(e);
@@ -59,9 +60,10 @@ export default function ShiftAddPage() {
 
     return (
         <div style={{ maxWidth: 600, margin: "0 auto", padding: 20 }}>
+
             <h2>Plan a shift</h2>
 
-            <div style={{ background: "#f8f9fa", padding: 20, borderRadius: 8, marginBottom: 20 }}>
+            <div style={{padding: 20, borderRadius: 8, marginBottom: 20 }}>
                 <div style={{ marginBottom: 15 }}>
                     <label style={{display: "block", marginBottom: 5}}>Start:</label>
                     <input
@@ -93,7 +95,7 @@ export default function ShiftAddPage() {
 
 
             {isSearched && availability && (
-                <div style={{ border: "1px solid #ddd", padding: 20, borderRadius: 8, background: "white" }}>
+                <div style={{ border: "1px solid #ddd", padding: 20, borderRadius: 8}}>
                     <h3>Avaiable:</h3>
 
                     <div style={{ marginBottom: 15 }}>
@@ -141,6 +143,24 @@ export default function ShiftAddPage() {
                     >
                         Confirm
                     </button>
+                </div>
+            )}
+            {createdShift && (
+                <div
+                    style={{
+                        marginBottom: 20,
+                        padding: 16,
+                        background: "#e6fffa",
+                        borderRadius: 8,
+                        border: "1px solid #38b2ac",
+                        color: "#065f46"
+                    }}
+                >
+                    <h3 style={{ marginTop: 0 }}>Shift created successfully </h3>
+                    <p><strong>ID:</strong> {createdShift.id}</p>
+                    <p><strong>Doctor:</strong> {createdShift.doctorName}</p>
+                    <p><strong>Office:</strong> {createdShift.officeName}</p>
+                    <p><strong>Time:</strong> {createdShift.start} - {createdShift.end}</p>
                 </div>
             )}
         </div>
