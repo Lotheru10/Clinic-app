@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-public class AppointmentAssingmentService {
+public class AppointmentAssignmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ShiftRepository shiftRepository;
     private final static int DURATION = 15;
 
 
-    public AppointmentAssingmentService(AppointmentRepository appointmentRepository, ShiftRepository shiftRepository) {
+    public AppointmentAssignmentService(AppointmentRepository appointmentRepository, ShiftRepository shiftRepository) {
         this.appointmentRepository = appointmentRepository;
         this.shiftRepository = shiftRepository;
     }

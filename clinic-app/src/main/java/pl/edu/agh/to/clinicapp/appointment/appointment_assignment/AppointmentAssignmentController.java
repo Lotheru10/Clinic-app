@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/appointment-assigment")
 @Tag(name = "Appointments assigment", description = "API for managing appointments assigment")
-public class AppointmentAssingmentController {
+public class AppointmentAssignmentController {
 
 
-    private final AppointmentAssingmentService appointmentAssingmentService;
+    private final AppointmentAssignmentService appointmentAssignmentService;
 
-    public AppointmentAssingmentController(AppointmentAssingmentService appointmentAssingmentService) {
-        this.appointmentAssingmentService = appointmentAssingmentService;
+    public AppointmentAssignmentController(AppointmentAssignmentService appointmentAssignmentService) {
+        this.appointmentAssignmentService = appointmentAssignmentService;
     }
 
 
@@ -42,7 +42,7 @@ public class AppointmentAssingmentController {
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam("end")   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ){
-        return appointmentAssingmentService.getAvailableSlots(doctorId, start, end);
+        return appointmentAssignmentService.getAvailableSlots(doctorId, start, end);
     }
 
 }
