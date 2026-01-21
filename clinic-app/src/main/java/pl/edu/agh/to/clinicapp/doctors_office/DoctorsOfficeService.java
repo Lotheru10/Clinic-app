@@ -9,8 +9,8 @@ import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorOfficeShiftDTO;
-import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeHasShiftException;
-import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.List;
@@ -91,6 +91,7 @@ public class DoctorsOfficeService {
     private DoctorOfficeShiftDTO mapToDoctorOfficeShiftDTO(Shift shift) {
         Doctor d = shift.getDoctor();
         return new DoctorOfficeShiftDTO(
+                shift.getId(),
                 d.getId(),
                 d.getFirstName() + " "+ d.getLastName(),
                 shift.getStart(),

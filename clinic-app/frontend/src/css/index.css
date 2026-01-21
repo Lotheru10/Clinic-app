@@ -67,17 +67,42 @@ button:focus-visible {
   }
 }
 header {
-    margin:20px;
-    text-align: center;
+  margin: 20px;
+  text-align: center;
 }
-nav {
 
+body {
+  margin: 0;
+  min-height: 10vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-body{
-    margin: 0;
-    min-height: 10vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.react-calendar {
+  width: 350px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.highlight-green {
+  background: #d4edda !important;
+  color: #155724 !important;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.highlight-green:hover {
+  background: #c3e6cb !important;
+}
+
+.react-calendar__tile--active {
+  background: #006edc !important;
+  color: white !important;
 }

@@ -43,4 +43,18 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
+
+    @Query("""
+    select s from Shift s
+    where s.doctor.id = :doctorId
+      and s.start < :to
+      and s.end > :from
+    order by s.start
+""")
+    List<Shift> overlappingShiftsForDoctor(
+            @Param("doctorId") int doctorId,
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to
+    );
+
 }

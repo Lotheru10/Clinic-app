@@ -6,6 +6,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pl.edu.agh.to.clinicapp.exception.appointment_exceptions.AppointmentSlotTakenException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeHasShiftException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientHasAppointmentException;
+import pl.edu.agh.to.clinicapp.exception.patient_exceptions.PatientNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.shift_exceptions.ShiftNotFoundException;
 
 import java.util.Map;
 
@@ -49,4 +57,39 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("message", ex.getMessage()));
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(PatientHasAppointmentException.class)
+    public ResponseEntity<Object> handlePatientHasAppointment(PatientHasAppointmentException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(AppointmentSlotTakenException.class)
+    public ResponseEntity<Object> handleAppointmentSlotTaken(AppointmentSlotTakenException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    // 3. Obsługa braku Shift (używane w AppointmentService)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ShiftNotFoundException.class)
+    public ResponseEntity<Object> handleShiftNotFound(ShiftNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    // 4. Obsługa IllegalArgumentException (np. wizyta poza godzinami shiftu)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
 }

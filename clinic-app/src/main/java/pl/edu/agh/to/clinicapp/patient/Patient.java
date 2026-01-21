@@ -1,6 +1,11 @@
 package pl.edu.agh.to.clinicapp.patient;
 
 import jakarta.persistence.*;
+import pl.edu.agh.to.clinicapp.appointment.Appointment;
+import pl.edu.agh.to.clinicapp.shift.Shift;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Patient {
@@ -22,6 +27,13 @@ public class Patient {
 
     @Column(nullable = false)
     private String address;
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Appointment> appointments = new ArrayList<>();
 
 
     public Patient(String firstName, String lastName, String peselNumber, String address) {

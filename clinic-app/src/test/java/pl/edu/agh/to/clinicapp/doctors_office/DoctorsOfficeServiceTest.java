@@ -10,7 +10,7 @@ import pl.edu.agh.to.clinicapp.doctor.Specialization;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.CreateDoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDTO;
 import pl.edu.agh.to.clinicapp.dto.doctors_office_dto.DoctorsOfficeDetailsDTO;
-import pl.edu.agh.to.clinicapp.exception.DoctorsOfficeNotFoundException;
+import pl.edu.agh.to.clinicapp.exception.doctor_office_exceptions.DoctorsOfficeNotFoundException;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.time.LocalDateTime;
@@ -19,8 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @ExtendWith(MockitoExtension.class)
@@ -92,13 +91,16 @@ public class DoctorsOfficeServiceTest {
     }
 
     @Test
-    void deleteDoctorsOfficeCallRepository() {
-        int id = 5;
+    void deleteDoctorThrowsWhenNotFound() {
+        int id = 33;
+        when(doctorsOfficeRepository.findById(id)).thenReturn(Optional.empty());
 
-        doctorsOfficeService.deleteDoctorsOffice(id);
+        assertThrows(DoctorsOfficeNotFoundException.class, () -> doctorsOfficeService.deleteDoctorsOffice(id));
 
-        verify(doctorsOfficeRepository, times(1)).deleteById(id);
+        verify(doctorsOfficeRepository).findById(id);
+        verify(doctorsOfficeRepository, never()).deleteById(anyInt());
     }
+
 
     @Test
     void getDoctorOfficeByIdMapShiftsCorrectly() {
