@@ -4,16 +4,29 @@
 It supports patient registration, doctor schedules, appointment booking, and core clinic workflows, with a strong focus on clean backend architecture and RESTful API design.
 The project was developed primarily from a backend perspective, aiming to reflect real-world backend challenges such as data consistency, clear API boundaries, and maintainable domain logic.
 
+## My Responsibilities
+My primary responsibility was backend development, including RESTful API design, business logic implementation, and backend architecture.
+
+## Personal Extension
+
+This repository includes an independent extension developed after the original team project was completed.
+
+The extension introduces a review and moderation system, focusing on backend-driven business rules such as
+review eligibility, content validation, and automated user-level enforcement.
+
+
 ## Features
 
 - Patient registration and management  
 - Doctor schedules and availability
-- Appointment booking and cancellation  
+- Appointment booking and cancellation
 - Backend-driven business logic
 - RESTful API for frontend communication
-
-## My Responsibilities
-My primary responsibility was backend development, including RESTful API design, business logic implementation, and backend architecture.
+  
+**Reviews & Moderation** *(personal extension)*
+- Patients can leave reviews after completed appointments  
+- Automated content moderation prevents the use of prohibited language  
+- Repeated violations result in account removal after exceeding a defined threshold
 
 ## Tech Stack
 
@@ -44,7 +57,11 @@ This repository is organized as a simple monorepo:
 
 
 ## How to run
-clone a repository
+Clone the repository:
+
+```bash
+git clone https://github.com/Lotheru10/clinic-app.git
+```
 
 **Backend**
 
