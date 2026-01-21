@@ -1,4 +1,4 @@
-# Clinic-app
+# Clinic App
 
 **Clinic App** is a team-developed web application for managing a medical clinic.
 It supports patient registration, doctor schedules, appointment booking, and core clinic workflows, with a strong focus on clean backend architecture and RESTful API design.
