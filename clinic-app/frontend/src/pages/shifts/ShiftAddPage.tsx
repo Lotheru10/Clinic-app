@@ -33,7 +33,7 @@ export default function ShiftAddPage() {
             setAvailability(data);
             setIsSearched(true);
         } catch (e) {
-            setMsg("Error");
+            setMsg(""+e);
             console.error(e);
         } finally {
             setIsLoading(false);

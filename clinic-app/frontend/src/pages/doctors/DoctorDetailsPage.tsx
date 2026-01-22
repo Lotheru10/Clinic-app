@@ -124,7 +124,7 @@ export default function DoctorDetailsPage() {
               }}
             >
               <thead>
-                <tr style={{ background: "#f9f9f9", textAlign: "left" }}>
+                <tr style={{textAlign: "left" }}>
                   <th
                     style={{ padding: "8px", borderBottom: "2px solid #ddd" }}
                   >

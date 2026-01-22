@@ -8,9 +8,13 @@ import pl.edu.agh.to.clinicapp.doctors_office.DoctorsOffice;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.CreateDoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDTO;
 import pl.edu.agh.to.clinicapp.dto.doctor_dto.DoctorDetailsDTO;
+import pl.edu.agh.to.clinicapp.dto.opinion_dto.OpinionDTO;
 import pl.edu.agh.to.clinicapp.dto.shift_dto.DoctorShiftDTO;
 import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorHasShiftException;
 import pl.edu.agh.to.clinicapp.exception.doctor_exceptions.DoctorNotFoundException;
+import pl.edu.agh.to.clinicapp.opinion.Opinion;
+import pl.edu.agh.to.clinicapp.opinion.OpinionRepository;
+import pl.edu.agh.to.clinicapp.patient.Patient;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.List;
@@ -19,9 +23,11 @@ import java.util.List;
 @Validated
 public class DoctorService {
     private final DoctorRepository doctorRepository;
+    private final OpinionRepository opinionRepository;
 
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(DoctorRepository doctorRepository, OpinionRepository opinionRepository) {
         this.doctorRepository = doctorRepository;
+        this.opinionRepository = opinionRepository;
     }
 
     /**
@@ -68,6 +74,9 @@ public class DoctorService {
                 doctor.getAddress(),
                 doctor.getShifts().stream()
                         .map(this::mapToDoctorShiftDTO)
+                        .toList(),
+                opinionRepository.findOpinionsByDoctorId(doctor.getId()).stream()
+                        .map(this::mapToOpinionDTO)
                         .toList()
         );
     }
@@ -80,6 +89,15 @@ public class DoctorService {
                 o.getRoomNumber()+ ". " + o.getRoomDescription(),
                 shift.getStart(),
                 shift.getEnd()
+        );
+    }
+    private OpinionDTO mapToOpinionDTO(Opinion o){
+        Patient patient = o.getAppointment().getPatient();
+        return new OpinionDTO(
+                o.getRate(),
+                o.getMessage(),
+                patient.getFirstName() +" "+ patient.getLastName(),
+                o.getAppointment().getStart()
         );
     }
     /**

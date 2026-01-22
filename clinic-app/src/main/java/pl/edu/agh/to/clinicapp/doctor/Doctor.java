@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import pl.edu.agh.to.clinicapp.opinion.Opinion;
 import pl.edu.agh.to.clinicapp.shift.Shift;
 
 import java.util.ArrayList;
@@ -102,4 +103,5 @@ public class Doctor {
     public void setId(int id) {
         this.id = id;
     }
+
 }
