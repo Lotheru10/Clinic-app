@@ -1,6 +1,9 @@
 package pl.edu.agh.to.clinicapp.opinion;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import pl.edu.agh.to.clinicapp.appointment.Appointment;
 import pl.edu.agh.to.clinicapp.doctor.Doctor;
 
@@ -10,7 +13,8 @@ public class Opinion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Max(5)
+    @Min(1)
     private int rate;
 
     @Column()

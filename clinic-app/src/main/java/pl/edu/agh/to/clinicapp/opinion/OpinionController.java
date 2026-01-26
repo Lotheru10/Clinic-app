@@ -1,11 +1,9 @@
 package pl.edu.agh.to.clinicapp.opinion;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.to.clinicapp.dto.opinion_dto.CreateOpinionDTO;
 
 @RestController
@@ -20,7 +18,7 @@ public class OpinionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addOpinion(CreateOpinionDTO createOpinionDTO){
+    public void addOpinion(@Valid @RequestBody CreateOpinionDTO createOpinionDTO){
         opinionService.addOpinion(createOpinionDTO);
     }
 

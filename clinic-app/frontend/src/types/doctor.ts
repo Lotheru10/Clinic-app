@@ -10,6 +10,7 @@ export interface DoctorDTO {
 export interface DoctorDetailsDTO extends DoctorDTO{
     address: string;
     shifts: DoctorShiftDTO[];
+    opinions: OpinionDTO[];
 }
 
 export type DoctorCreateRequest = {
